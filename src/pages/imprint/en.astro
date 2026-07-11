@@ -1,0 +1,55 @@
+---
+import Base from '../../layouts/Base.astro'
+import Nav from '../../components/Nav.astro'
+import Footer from '../../components/Footer.astro'
+---
+
+<Base
+  title="Imprint — Pelton"
+  description="Legal disclosure (Impressum) for Pelton, required under German law."
+  noindex
+>
+  <Nav />
+  <main>
+    <section class="legal">
+      <div class="wrap legal-wrap">
+        <h1>Imprint</h1>
+        <p class="legal-note">Legal disclosure required under German law (&sect;5 DDG). English translation, the German version is authoritative.</p>
+        <nav class="legal-switch" aria-label="Language">
+          <a href="/imprint">Deutsch</a>
+          <span>&middot;</span>
+          <a href="/imprint/en" class="is-active">English</a>
+        </nav>
+        <nav class="legal-links" aria-label="Legal">
+          <a href="/privacy">Privacy Policy</a>
+        </nav>
+
+        <h2>Legal disclosure</h2>
+
+        <p>
+          Stellar Foundry GmbH i. G.<br />
+          Thomas-Mann-Stra&szlig;e 19<br />
+          53111 Bonn<br />
+          Germany
+        </p>
+
+        <p>
+          <strong>Managing Director (Gesch&auml;ftsf&uuml;hrerin):</strong><br />
+          Marion Hillebrecht
+        </p>
+
+        <h2>Contact</h2>
+        <p>Email: <a href="mailto:pelton@arne.sh">pelton@arne.sh</a></p>
+
+        <h2>Consumer dispute resolution / Universal arbitration board</h2>
+        <p>
+          We are not willing or obliged to participate in dispute resolution proceedings before a
+          consumer arbitration board.
+        </p>
+
+        <p class="legal-source">Source: <a href="https://www.e-recht24.de" target="_blank" rel="noreferrer noopener">e-recht24.de</a></p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>

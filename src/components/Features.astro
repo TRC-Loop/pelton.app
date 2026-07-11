@@ -1,0 +1,90 @@
+---
+import Icon from './Icon.astro'
+import AnchorHeading from './AnchorHeading.astro'
+import { features } from '../data/site.js'
+
+const flagColors = ['#E5484D', '#F76B15', '#FFB224', '#30A46C', '#12A594', '#3E63DD', '#8E4EC6', '#E93D82']
+
+const layoutClass = {
+  big: 'b-big',
+  vertical: 'b-vertical',
+  wide: 'span-3',
+  half: 'span-2',
+}
+---
+
+<section id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <AnchorHeading id="features">Built for privacy, without getting in your way</AnchorHeading>
+      <p>Everything runs locally. These are the parts that already work today.</p>
+    </div>
+    <div class="bento">
+      {features.map((f) => (
+        <div class:list={['bento-item', layoutClass[f.layout], { 'is-big': f.layout === 'big', 'is-vertical': f.layout === 'vertical' }]}>
+          <span class="b-icon"><Icon name={f.icon} size={22} /></span>
+          <div class="b-text">
+            <h3>{f.title}</h3>
+            <p>{f.body}</p>
+          </div>
+
+          {f.visual === 'flags' && (
+            <div class="flag-strip">{flagColors.map((c) => <span style={`background:${c}`}></span>)}</div>
+          )}
+
+          {f.visual === 'search' && (
+            <div class="b-search">
+              <div class="b-search-field">
+                <Icon name="search" size={16} stroke={1.7} />
+                <span class="b-search-q">contract<span class="b-search-caret"></span></span>
+                <span class="b-search-count">3 results</span>
+              </div>
+              <div class="b-search-rows">
+                <div class="b-search-row"><span class="b-search-name">Legal</span><span class="b-search-subj">Signed <mark>contract</mark> attached</span></div>
+                <div class="b-search-row"><span class="b-search-name">Dropbox</span><span class="b-search-subj">Your <mark>contract</mark> is ready to view</span></div>
+                <div class="b-search-row"><span class="b-search-name">Ada L.</span><span class="b-search-subj">Re: <mark>contract</mark> review notes</span></div>
+              </div>
+            </div>
+          )}
+
+          {f.visual === 'os-stack' && (
+            <div class="b-os-stack">
+              <span class="b-os-row"><Icon name="apple" size={16} stroke={1.7} /><span>macOS</span></span>
+              <span class="b-os-row"><Icon name="brand-windows" size={16} stroke={1.7} /><span>Windows</span></span>
+              <span class="b-os-row"><Icon name="brand-redhat" size={16} stroke={1.7} /><span>Fedora</span></span>
+            </div>
+          )}
+
+          {f.visual === 'progress' && (
+            <div class="b-progress">
+              <div class="b-progress-top">
+                <span>Downloading offline</span>
+                <span class="b-progress-count">128/512</span>
+              </div>
+              <span class="b-progress-bar"><span class="b-progress-fill" style="width:25%"></span></span>
+              <div class="b-progress-bottom">
+                <span>25%</span>
+                <span>~2:14 left</span>
+              </div>
+            </div>
+          )}
+
+          {f.visual === 'snooze' && (
+            <div class="b-snooze">
+              <div class="b-snooze-row">
+                <Icon name="sun" size={15} stroke={1.7} />
+                <span class="b-snooze-label">Tomorrow</span>
+                <span class="b-snooze-sub">Fri, 9:00 AM</span>
+              </div>
+              <div class="b-snooze-row">
+                <Icon name="arrow-right" size={15} stroke={1.7} />
+                <span class="b-snooze-label">Next week</span>
+                <span class="b-snooze-sub">Mon, 9:00 AM</span>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

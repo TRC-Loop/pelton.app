@@ -1,0 +1,184 @@
+---
+import Icon from './Icon.astro'
+import { repo } from '../data/site.js'
+
+const scenarios = [
+  {
+    query: 'invoice',
+    results: [
+      { name: 'Stripe', subj: 'Your invoice #1041 is available', time: '09:41' },
+      { name: 'Fastmail', subj: 'Invoice paid, thank you', time: '08:12' },
+      { name: 'AWS', subj: 'Your monthly invoice is ready to view', time: 'Mon' },
+      { name: 'Namecheap', subj: 'Domain invoice and renewal notice', time: 'Sun' },
+    ],
+  },
+  {
+    query: 'meeting',
+    results: [
+      { name: 'Ada Lovelace', subj: 'Meeting notes from the design review', time: '11:20' },
+      { name: 'Calendar', subj: 'Meeting reminder: release call at 15:00', time: '08:30' },
+      { name: 'Grace H.', subj: 'Can we move the meeting to Thursday?', time: 'Tue' },
+    ],
+  },
+  {
+    query: 'receipt',
+    results: [
+      { name: 'Apple', subj: 'Your receipt from the App Store', time: '07:02' },
+      { name: 'Uber', subj: 'Receipt for your Friday trip', time: 'Fri' },
+      { name: 'Bandcamp', subj: 'Your receipt and download links', time: 'Thu' },
+    ],
+  },
+  {
+    query: 'security',
+    results: [
+      { name: 'GitHub', subj: 'Security alert on TRC-Loop/Pelton', time: '10:05' },
+      { name: 'Proton', subj: 'New sign-in and security review', time: 'Wed' },
+    ],
+  },
+]
+
+const spec = ['GPL-3.0', 'zero telemetry', 'Go + Wails', 'IMAP / SMTP', 'local SQLite']
+---
+
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <div class="hero-copy">
+      <h1>Find it as fast<br />as you can <span class="accent-text">type</span></h1>
+      <p class="lead">
+        Pelton is a free, open-source email client that searches your whole mailbox locally, online or
+        off. No telemetry, no servers of ours. Your mail stays on your machine.
+      </p>
+      <div class="hero-actions">
+        <a href="#download" class="btn accent">
+          <Icon name="download" size={18} />
+          <span>Download</span>
+        </a>
+        <a href={repo.client} class="btn ghost" target="_blank" rel="noreferrer noopener">
+          <Icon name="brand-github" size={18} />
+          <span>View source</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-search">
+      <div class="hs-field">
+        <span class="hs-icon"><Icon name="search" size={20} /></span>
+        <span class="hs-typed" id="hs-typed"></span><span class="hs-caret" id="hs-caret"></span>
+        <span class="hs-count" id="hs-count"></span>
+      </div>
+      <div class="hs-results" id="hs-results"></div>
+    </div>
+
+    <ul class="hero-spec">
+      {spec.map((s) => <li>{s}</li>)}
+    </ul>
+  </div>
+
+  <script type="application/json" id="hs-data" set:html={JSON.stringify(scenarios)}></script>
+</section>
+
+<script>
+  type Result = { name: string; subj: string; time: string }
+  type Scenario = { query: string; results: Result[] }
+
+  const dataEl = document.getElementById('hs-data')
+  const scenarios: Scenario[] = dataEl ? JSON.parse(dataEl.textContent || '[]') : []
+
+  const typed = document.getElementById('hs-typed')
+  const caret = document.getElementById('hs-caret')
+  const count = document.getElementById('hs-count')
+  const list = document.getElementById('hs-results')
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  function escapeHtml(s: string): string {
+    return s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c] as string)
+  }
+
+  function highlight(subj: string, query: string): string {
+    const i = subj.toLowerCase().indexOf(query.toLowerCase())
+    if (i === -1) return escapeHtml(subj)
+    return (
+      escapeHtml(subj.slice(0, i)) +
+      '<mark>' +
+      escapeHtml(subj.slice(i, i + query.length)) +
+      '</mark>' +
+      escapeHtml(subj.slice(i + query.length))
+    )
+  }
+
+  const MAX_ROWS = 4
+  const pool: Result[] = scenarios.flatMap((s) => s.results)
+
+  function matches(query: string): Result[] {
+    const q = query.toLowerCase()
+    return pool.filter((r) => r.subj.toLowerCase().includes(q)).slice(0, MAX_ROWS)
+  }
+
+  function render(query: string): void {
+    if (!list || !count) return
+    if (!query) {
+      list.innerHTML = ''
+      count.classList.remove('shown')
+      return
+    }
+    const found = matches(query)
+    list.innerHTML = ''
+    found.forEach((r) => {
+      const row = document.createElement('div')
+      row.className = 'hs-row'
+      row.innerHTML =
+        '<span class="hs-dot"></span>' +
+        `<span class="hs-name">${escapeHtml(r.name)}</span>` +
+        `<span class="hs-subj">${highlight(r.subj, query)}</span>` +
+        `<span class="hs-time">${escapeHtml(r.time)}</span>`
+      list.appendChild(row)
+    })
+    count.textContent = `${found.length} result${found.length === 1 ? '' : 's'}`
+    count.classList.add('shown')
+  }
+
+  function setQuery(q: string): void {
+    if (typed) typed.textContent = q
+    render(q)
+  }
+
+  const wait = (ms: number) => new Promise((res) => setTimeout(res, ms))
+
+  async function typeText(text: string): Promise<void> {
+    for (let i = 0; i <= text.length; i++) {
+      setQuery(text.slice(0, i))
+      await wait(90)
+    }
+  }
+
+  async function deleteText(text: string): Promise<void> {
+    for (let i = text.length; i >= 0; i--) {
+      setQuery(text.slice(0, i))
+      await wait(45)
+    }
+  }
+
+  async function loop(): Promise<void> {
+    let idx = 0
+    while (true) {
+      const scn = scenarios[idx]
+      caret?.classList.remove('steady')
+      await typeText(scn.query)
+      caret?.classList.add('steady')
+      await wait(2600)
+      caret?.classList.remove('steady')
+      await deleteText(scn.query)
+      await wait(360)
+      idx = (idx + 1) % scenarios.length
+    }
+  }
+
+  if (scenarios.length) {
+    if (reduce) {
+      setQuery(scenarios[0].query)
+      caret?.classList.add('steady')
+    } else {
+      setTimeout(loop, 500)
+    }
+  }
+</script>

@@ -1,0 +1,73 @@
+---
+import Icon from './Icon.astro'
+---
+
+<div class="code-card">
+  <div class="code-head">
+    <span class="code-dot"></span>
+    <a class="code-path" id="code-path" target="_blank" rel="noreferrer noopener"></a>
+    <button type="button" class="code-shuffle" id="code-shuffle" aria-label="Show another file">
+      <Icon name="refresh" size={15} stroke={1.8} />
+    </button>
+  </div>
+  <div class="code-body" id="code-body"></div>
+  <div class="code-foot">
+    <span id="code-lang"></span>
+    <a id="code-link" target="_blank" rel="noreferrer noopener">
+      <span>View on GitHub</span>
+      <Icon name="external-link" size={14} />
+    </a>
+  </div>
+</div>
+
+<script>
+  import { snippets } from '../data/snippets.js'
+
+  type Snippet = { path: string; lang: string; start: number; url: string; code: string }
+  const pool = snippets as Snippet[]
+
+  const pathEl = document.getElementById('code-path') as HTMLAnchorElement | null
+  const bodyEl = document.getElementById('code-body')
+  const langEl = document.getElementById('code-lang')
+  const linkEl = document.getElementById('code-link') as HTMLAnchorElement | null
+  const shuffleEl = document.getElementById('code-shuffle')
+
+  function escapeHtml(s: string): string {
+    return s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[c] as string)
+  }
+
+  function show(snippet: Snippet): void {
+    if (pathEl) {
+      pathEl.textContent = snippet.path
+      pathEl.href = snippet.url
+    }
+    if (langEl) langEl.textContent = snippet.lang === 'go' ? 'Go' : 'Svelte'
+    if (linkEl) linkEl.href = snippet.url
+    if (!bodyEl) return
+    bodyEl.scrollTop = 0
+    const lines = snippet.code.split('\n')
+    bodyEl.innerHTML = lines
+      .map((line, i) => {
+        const n = snippet.start + i
+        return (
+          `<div class="code-line"><span class="code-ln">${n}</span>` +
+          `<span class="code-lc">${escapeHtml(line) || ' '}</span></div>`
+        )
+      })
+      .join('')
+  }
+
+  let current = -1
+  function pick(): void {
+    if (pool.length === 0) return
+    let next = Math.floor(Math.random() * pool.length)
+    if (pool.length > 1) {
+      while (next === current) next = Math.floor(Math.random() * pool.length)
+    }
+    current = next
+    show(pool[next])
+  }
+
+  shuffleEl?.addEventListener('click', pick)
+  pick()
+</script>

@@ -1,0 +1,303 @@
+---
+import Icon from './Icon.astro'
+import AnchorHeading from './AnchorHeading.astro'
+import { repo } from '../data/site.js'
+---
+
+<section id="community" class="community">
+  <div class="wrap">
+    <div class="section-head">
+      <AnchorHeading id="community">Made in the open</AnchorHeading>
+      <p>Pelton is built by people who wanted a better email client. Here is where it stands right now.</p>
+    </div>
+
+    <div class="stats" id="repo-stats" aria-live="polite">
+      <a class="stat" href={`${repo.client}/stargazers`} target="_blank" rel="noreferrer noopener">
+        <Icon name="star" size={20} />
+        <span class="stat-num" id="stat-stars">&mdash;</span>
+        <span class="stat-label">Stars</span>
+      </a>
+      <a class="stat" href={`${repo.client}/forks`} target="_blank" rel="noreferrer noopener">
+        <Icon name="git-fork" size={20} />
+        <span class="stat-num" id="stat-forks">&mdash;</span>
+        <span class="stat-label">Forks</span>
+      </a>
+      <a class="stat" href={`${repo.client}/watchers`} target="_blank" rel="noreferrer noopener">
+        <Icon name="eye" size={20} />
+        <span class="stat-num" id="stat-watchers">&mdash;</span>
+        <span class="stat-label">Watching</span>
+      </a>
+    </div>
+
+    <div class="contrib-pit" id="contrib-pit" hidden>
+      <canvas id="contrib-canvas" class="contrib-canvas" aria-hidden="true"></canvas>
+      <div class="contrib-tooltip" id="contrib-tooltip" hidden></div>
+      <ul class="sr-only" id="contrib-list"></ul>
+    </div>
+  </div>
+</section>
+
+<script>
+  const REPO = 'https://api.github.com/repos/TRC-Loop/Pelton'
+  const MAX_CONTRIBUTORS = 14
+
+  function fmt(n: number): string {
+    if (n >= 1000) return (n / 1000).toFixed(n >= 10000 ? 0 : 1).replace(/\.0$/, '') + 'k'
+    return String(n)
+  }
+
+  function setNum(id: string, n: number): void {
+    const el = document.getElementById(id)
+    if (el) el.textContent = fmt(n)
+  }
+
+  async function loadStats(): Promise<void> {
+    try {
+      const res = await fetch(REPO, { headers: { Accept: 'application/vnd.github+json' } })
+      if (!res.ok) return
+      const d = await res.json()
+      setNum('stat-stars', d.stargazers_count ?? 0)
+      setNum('stat-forks', d.forks_count ?? 0)
+      setNum('stat-watchers', d.subscribers_count ?? 0)
+    } catch {}
+  }
+
+  type Contributor = { login: string; avatar_url: string; html_url: string; type: string }
+
+  interface Ball {
+    c: Contributor
+    img: HTMLImageElement
+    ready: boolean
+    x: number
+    y: number
+    vx: number
+    vy: number
+    r: number
+    spawnIn: number
+    started: boolean
+  }
+
+  function buildAccessibleList(list: Contributor[]): void {
+    const ul = document.getElementById('contrib-list')
+    if (!ul) return
+    for (const c of list) {
+      const li = document.createElement('li')
+      const a = document.createElement('a')
+      a.href = c.html_url
+      a.target = '_blank'
+      a.rel = 'noreferrer noopener'
+      a.textContent = c.login
+      li.appendChild(a)
+      ul.appendChild(li)
+    }
+  }
+
+  function runPit(list: Contributor[]): void {
+    const pit = document.getElementById('contrib-pit') as HTMLElement | null
+    const canvas = document.getElementById('contrib-canvas') as HTMLCanvasElement | null
+    const tooltip = document.getElementById('contrib-tooltip') as HTMLElement | null
+    if (!pit || !canvas || !tooltip) return
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const dpr = Math.min(window.devicePixelRatio || 1, 2)
+    const R = 22
+
+    let width = 0
+    let height = 260
+
+    function resize(): void {
+      if (!canvas) return
+      width = canvas.clientWidth
+      canvas.width = width * dpr
+      canvas.height = height * dpr
+      ctx?.setTransform(dpr, 0, 0, dpr, 0, 0)
+    }
+
+    pit.hidden = false
+    resize()
+    window.addEventListener('resize', resize)
+
+    const balls: Ball[] = list.map((c, i) => {
+      const img = new Image()
+      const ball: Ball = {
+        c,
+        img,
+        ready: false,
+        x: 40 + Math.random() * (width - 80 || 200),
+        y: -60 - i * 70,
+        vx: (Math.random() - 0.5) * 2,
+        vy: 0,
+        r: R,
+        spawnIn: i * 220,
+        started: reduce,
+      }
+      img.onload = () => {
+        ball.ready = true
+      }
+      img.src = `${c.avatar_url}&s=96`
+      return ball
+    })
+
+    if (reduce) {
+      const cols = Math.max(1, Math.floor(width / (R * 2 + 10)))
+      balls.forEach((b, i) => {
+        b.x = R + 8 + (i % cols) * (R * 2 + 10)
+        b.y = R + 8 + Math.floor(i / cols) * (R * 2 + 10)
+        b.vx = 0
+        b.vy = 0
+      })
+    }
+
+    const GRAVITY = 0.55
+    const RESTITUTION = 0.4
+    const FRICTION = 0.985
+
+    let last = performance.now()
+    let hovered: Ball | null = null
+
+    function step(now: number): void {
+      const dt = Math.min((now - last) / 16.67, 2)
+      last = now
+
+      if (!reduce) {
+        for (const b of balls) {
+          if (!b.started) {
+            b.spawnIn -= dt * 16.67
+            if (b.spawnIn <= 0) b.started = true
+            continue
+          }
+          b.vy += GRAVITY * dt
+          b.x += b.vx * dt
+          b.y += b.vy * dt
+
+          if (b.x - b.r < 0) {
+            b.x = b.r
+            b.vx *= -RESTITUTION
+          } else if (b.x + b.r > width) {
+            b.x = width - b.r
+            b.vx *= -RESTITUTION
+          }
+          if (b.y + b.r > height) {
+            b.y = height - b.r
+            b.vy *= -RESTITUTION
+            b.vx *= FRICTION
+            if (Math.abs(b.vy) < 0.6) b.vy = 0
+          }
+        }
+
+        for (let i = 0; i < balls.length; i++) {
+          for (let j = i + 1; j < balls.length; j++) {
+            const a = balls[i]
+            const b = balls[j]
+            if (!a.started || !b.started) continue
+            const dx = b.x - a.x
+            const dy = b.y - a.y
+            const dist = Math.hypot(dx, dy) || 0.001
+            const minDist = a.r + b.r
+            if (dist < minDist) {
+              const overlap = (minDist - dist) / 2
+              const nx = dx / dist
+              const ny = dy / dist
+              a.x -= nx * overlap
+              a.y -= ny * overlap
+              b.x += nx * overlap
+              b.y += ny * overlap
+              const avx = (a.vx + b.vx) / 2
+              const avy = (a.vy + b.vy) / 2
+              a.vx = avx - (b.vx - a.vx) * RESTITUTION * 0.3
+              a.vy = avy - (b.vy - a.vy) * RESTITUTION * 0.3
+              b.vx = avx - (a.vx - b.vx) * RESTITUTION * 0.3
+              b.vy = avy - (a.vy - b.vy) * RESTITUTION * 0.3
+            }
+          }
+        }
+      }
+
+      ctx!.clearRect(0, 0, width, height)
+      for (const b of balls) {
+        if (!b.started) continue
+        ctx!.save()
+        ctx!.beginPath()
+        ctx!.arc(b.x, b.y, b.r, 0, Math.PI * 2)
+        ctx!.clip()
+        if (b.ready) {
+          ctx!.drawImage(b.img, b.x - b.r, b.y - b.r, b.r * 2, b.r * 2)
+        } else {
+          ctx!.fillStyle = 'rgba(128,128,128,0.3)'
+          ctx!.fill()
+        }
+        ctx!.restore()
+        ctx!.beginPath()
+        ctx!.arc(b.x, b.y, b.r, 0, Math.PI * 2)
+        ctx!.lineWidth = 1
+        ctx!.strokeStyle = 'rgba(0,0,0,0.12)'
+        ctx!.stroke()
+      }
+
+      requestAnimationFrame(step)
+    }
+
+    requestAnimationFrame(step)
+
+    function ballAt(px: number, py: number): Ball | null {
+      for (let i = balls.length - 1; i >= 0; i--) {
+        const b = balls[i]
+        if (!b.started) continue
+        if (Math.hypot(px - b.x, py - b.y) <= b.r) return b
+      }
+      return null
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect()
+      const px = e.clientX - rect.left
+      const py = e.clientY - rect.top
+      const hit = ballAt(px, py)
+      canvas.style.cursor = hit ? 'pointer' : 'default'
+      if (hit !== hovered) {
+        hovered = hit
+        if (hit && tooltip) {
+          tooltip.textContent = hit.c.login
+          tooltip.hidden = false
+        } else if (tooltip) {
+          tooltip.hidden = true
+        }
+      }
+      if (hit && tooltip) {
+        tooltip.style.left = `${px}px`
+        tooltip.style.top = `${py - hit.r - 12}px`
+      }
+    })
+    canvas.addEventListener('mouseleave', () => {
+      hovered = null
+      if (tooltip) tooltip.hidden = true
+      canvas.style.cursor = 'default'
+    })
+    canvas.addEventListener('click', (e) => {
+      const rect = canvas.getBoundingClientRect()
+      const hit = ballAt(e.clientX - rect.left, e.clientY - rect.top)
+      if (hit) window.open(hit.c.html_url, '_blank', 'noopener,noreferrer')
+    })
+  }
+
+  async function loadContributors(): Promise<void> {
+    try {
+      const res = await fetch(`${REPO}/contributors?per_page=${MAX_CONTRIBUTORS}`, {
+        headers: { Accept: 'application/vnd.github+json' },
+      })
+      if (!res.ok) return
+      const list: Contributor[] = (await res.json())
+        .filter((c: Contributor) => c.type !== 'Bot')
+        .slice(0, MAX_CONTRIBUTORS)
+      if (!list.length) return
+      buildAccessibleList(list)
+      runPit(list)
+    } catch {}
+  }
+
+  loadStats()
+  loadContributors()
+</script>

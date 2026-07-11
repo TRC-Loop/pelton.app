@@ -1,0 +1,27 @@
+---
+const icons = import.meta.glob('../icons/*.svg', { query: '?raw', import: 'default', eager: true })
+
+interface Props {
+  name: string
+  size?: number
+  stroke?: number
+  class?: string
+}
+
+const { name, size = 20, stroke = 1.8, class: className } = Astro.props
+
+const raw = icons[`../icons/${name}.svg`] as string | undefined
+if (!raw) {
+  throw new Error(`Icon not found: ${name}`)
+}
+
+let svg = raw
+  .replace(/<path stroke="none" d="M0 0h24v24H0z" fill="none"\s*\/>/, '')
+  .replace(/\swidth="24"/, ` width="${size}"`)
+  .replace(/\sheight="24"/, ` height="${size}"`)
+  .replace(/\sstroke-width="2"/, ` stroke-width="${stroke}"`)
+  .replace(/\sclass="[^"]*"/, className ? ` class="${className}"` : '')
+  .replace(/\n\s*/g, ' ')
+---
+
+<Fragment set:html={svg} />

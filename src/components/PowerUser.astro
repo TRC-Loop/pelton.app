@@ -1,0 +1,44 @@
+---
+import Icon from './Icon.astro'
+import AnchorHeading from './AnchorHeading.astro'
+import { powerFeatures } from '../data/site.js'
+---
+
+<section id="power">
+  <div class="wrap power">
+    <div>
+      <div class="section-head" style="margin-bottom: 32px;">
+        <AnchorHeading id="power">Made for keyboard people</AnchorHeading>
+        <p>Vim mode in the composer, rebindable shortcuts everywhere, and swipe gestures on the trackpad.</p>
+      </div>
+      <div class="power-list">
+        {powerFeatures.map((p) => (
+          <div class="power-item">
+            <span class="p-icon"><Icon name={p.icon} size={19} /></span>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="compose-demo">
+      <div class="compose-head">
+        <Icon name="pencil" size={15} />
+        <span>Compose</span>
+        <span class="mode">NORMAL</span>
+      </div>
+      <div class="compose-field">
+        <span class="label">To</span>
+        <span class="value">ada@example.org</span>
+      </div>
+      <div class="compose-field">
+        <span class="label">Subject</span>
+        <span class="value">Re: offline sync</span>
+      </div>
+      <div class="compose-body">
+        Thanks for testing the build. The offline download bar now shows an<br />
+        ETA in the status bar, and swipe-to-archive is configurable.<span class="cursor"></span>
+      </div>
+    </div>
+  </div>
+</section>

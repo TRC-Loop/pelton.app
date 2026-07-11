@@ -1,0 +1,56 @@
+---
+import Icon from './Icon.astro'
+import CodeShowcase from './CodeShowcase.astro'
+import AnchorHeading from './AnchorHeading.astro'
+import { repo } from '../data/site.js'
+
+const points = [
+  {
+    icon: 'code',
+    title: 'GPL-3.0 licensed',
+    body: 'The full source is public. Read it, build it, fork it, ship your own.',
+  },
+  {
+    icon: 'git-fork',
+    title: 'Contributions welcome',
+    body: 'Bug fixes, UI polish, backend Go, translations. Open an issue or a pull request.',
+  },
+  {
+    icon: 'heart-handshake',
+    title: 'Community first',
+    body: 'No accounts, no upsells. Talk to us on Discord or by email.',
+  },
+]
+---
+
+<section id="open-source">
+  <div class="wrap opensource">
+    <div>
+      <div class="section-head" style="margin-bottom: 28px;">
+        <AnchorHeading id="open-source">Free and open source</AnchorHeading>
+        <p>
+          Pelton is written in Go with Wails, so it stays light on memory without a bundled browser.
+          It is still early, and the source is the best place to see where it stands.
+        </p>
+      </div>
+      <div class="os-points">
+        {points.map((p) => (
+          <div class="os-point">
+            <span class="os-icon"><Icon name={p.icon} size={19} /></span>
+            <div>
+              <h3>{p.title}</h3>
+              <p>{p.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div class="os-actions">
+        <a class="btn accent" href={repo.client} target="_blank" rel="noreferrer noopener">
+          <Icon name="brand-github" size={18} />
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
+    <CodeShowcase />
+  </div>
+</section>

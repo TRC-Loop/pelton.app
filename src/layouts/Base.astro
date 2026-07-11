@@ -1,0 +1,101 @@
+---
+import '../styles/global.css'
+
+interface Props {
+  title?: string
+  description?: string
+  noindex?: boolean
+  lang?: string
+}
+
+const {
+  title = 'Pelton — a private, open-source email client',
+  description = 'Pelton is a free and open-source email client written in Go. Zero telemetry, your data stays local, cross-platform. Work in progress.',
+  noindex = false,
+  lang = 'en',
+} = Astro.props
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site).toString()
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'Pelton',
+  description,
+  url: 'https://pelton.app',
+  applicationCategory: 'CommunicationApplication',
+  operatingSystem: 'macOS, Windows, Linux',
+  license: 'https://www.gnu.org/licenses/gpl-3.0.html',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  codeRepository: 'https://github.com/TRC-Loop/Pelton',
+}
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/webp" href="/img/pelton-logo.webp" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonicalURL} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content="https://pelton.app/img/screenshot.webp" />
+    <meta property="og:site_name" content="Pelton" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://pelton.app/img/screenshot.webp" />
+    <link rel="preload" href="/fonts/familjen-grotesk-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/familjen-grotesk-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
+    {!noindex && (
+      <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+    )}
+  </head>
+  <body>
+    <slot />
+
+    <div class="potato-egg" id="potato-egg" aria-hidden="true">
+      <img src="/img/pelton-logo.webp" alt="" class="potato-egg-img" />
+    </div>
+
+    <script>
+      const SEQ = 'potato'
+      let buf = ''
+      const egg = document.getElementById('potato-egg')
+      let timer: number | undefined
+
+      function editable(t: EventTarget | null): boolean {
+        const el = t as HTMLElement | null
+        if (!el) return false
+        const tag = el.tagName
+        return tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || el.isContentEditable
+      }
+
+      function fire(): void {
+        if (!egg) return
+        egg.classList.remove('go')
+        void egg.offsetWidth
+        egg.classList.add('go')
+        window.clearTimeout(timer)
+        timer = window.setTimeout(() => egg.classList.remove('go'), 3200)
+      }
+
+      window.addEventListener('keydown', (e) => {
+        if (e.metaKey || e.ctrlKey || e.altKey || editable(e.target)) return
+        if (e.key.length !== 1) return
+        buf = (buf + e.key.toLowerCase()).slice(-SEQ.length)
+        if (buf === SEQ) fire()
+      })
+    </script>
+  </body>
+</html>

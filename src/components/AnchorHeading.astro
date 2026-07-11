@@ -1,0 +1,18 @@
+---
+import Icon from './Icon.astro'
+
+interface Props {
+  id: string
+  tag?: 'h2' | 'h3'
+}
+
+const { id, tag = 'h2' } = Astro.props
+const Tag = tag
+---
+
+<Tag class="anchor-heading">
+  <a href={`#${id}`} class="heading-anchor" aria-label="Link to this section">
+    <Icon name="link" size={26} stroke={1.8} />
+  </a>
+  <slot />
+</Tag>

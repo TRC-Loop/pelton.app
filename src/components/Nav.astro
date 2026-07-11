@@ -1,0 +1,30 @@
+---
+import Icon from './Icon.astro'
+import { repo } from '../data/site.js'
+---
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="/" class="brand">
+      <img src="/img/pelton-logo.webp" alt="Pelton" width="26" height="26" />
+      <span>Pelton</span>
+    </a>
+    <nav class="nav-links">
+      <a href="/#features" class="text-link">Features</a>
+      <a href="/#preview" class="text-link">Preview</a>
+      <a href="/#download" class="text-link">Download</a>
+      <a href="/#faq" class="text-link">FAQ</a>
+      <a href={repo.docs} class="text-link" target="_blank" rel="noreferrer noopener">Docs</a>
+      <a href={repo.client} class="icon-link" target="_blank" rel="noreferrer noopener" aria-label="GitHub repository">
+        <Icon name="brand-github" size={19} />
+      </a>
+      <a href={repo.discord} class="icon-link discord-link" target="_blank" rel="noreferrer noopener" aria-label="Discord community">
+        <Icon name="brand-discord" size={19} />
+      </a>
+      <a href="/#download" class="btn accent nav-cta" aria-label="Download">
+        <Icon name="download" size={17} />
+        <span class="nav-cta-label">Download</span>
+      </a>
+    </nav>
+  </div>
+</header>

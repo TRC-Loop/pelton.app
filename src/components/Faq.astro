@@ -1,0 +1,25 @@
+---
+import Icon from './Icon.astro'
+import AnchorHeading from './AnchorHeading.astro'
+import { faq } from '../data/site.js'
+---
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <AnchorHeading id="faq">Questions</AnchorHeading>
+      <p>Answers straight from the project.</p>
+    </div>
+    <div class="faq-list">
+      {faq.map((item, i) => (
+        <details class="faq-item" open={i === 0}>
+          <summary>
+            <span>{item.q}</span>
+            <span class="chev"><Icon name="chevron-down" size={18} /></span>
+          </summary>
+          <div class="faq-body">{item.a}</div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

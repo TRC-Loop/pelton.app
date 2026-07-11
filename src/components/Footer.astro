@@ -1,0 +1,64 @@
+---
+import Icon from './Icon.astro'
+import { repo } from '../data/site.js'
+const year = new Date().getFullYear()
+---
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-main">
+      <div class="footer-brand">
+        <a href="/" class="brand">
+          <img src="/img/pelton-logo.webp" alt="Pelton" width="26" height="26" />
+          <span>Pelton</span>
+        </a>
+        <p>A fast, open-source email client. Your mail stays on your machine.</p>
+      </div>
+
+      <nav class="footer-col" aria-label="Product">
+        <span class="footer-head">Product</span>
+        <a href="/#features">Features</a>
+        <a href="/#preview">Live preview</a>
+        <a href="/#download">Download</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+
+      <nav class="footer-col" aria-label="Project">
+        <span class="footer-head">Project</span>
+        <a href={repo.client} target="_blank" rel="noreferrer noopener">Client source</a>
+        <a href={repo.website} target="_blank" rel="noreferrer noopener">Website source</a>
+        <a href={repo.releases} target="_blank" rel="noreferrer noopener">Releases</a>
+        <a href={repo.docs} target="_blank" rel="noreferrer noopener">Docs</a>
+      </nav>
+
+      <nav class="footer-col" aria-label="Community">
+        <span class="footer-head">Community</span>
+        <a href={repo.discord} target="_blank" rel="noreferrer noopener">Discord</a>
+        <a href={`mailto:${repo.email}`}>{repo.email}</a>
+        <a href={repo.client} target="_blank" rel="noreferrer noopener">Report an issue</a>
+      </nav>
+    </div>
+
+    <div class="footer-bottom">
+      <span>
+        &copy; {year} Pelton. GPL-3.0. Early and under active development.
+        <a href="/imprint/en" id="footer-imprint">Imprint / Impressum</a> &middot;
+        <a href="/privacy" id="footer-privacy">Privacy / Datenschutz</a> &middot;
+        <a href="/AGENTS.md">For AI agents</a>
+      </span>
+      <a href={repo.website} class="footer-src" target="_blank" rel="noreferrer noopener">
+        <Icon name="brand-github" size={15} />
+        <span>This site is open source: TRC-Loop/pelton.app</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  if (navigator.language.toLowerCase().startsWith('de')) {
+    const imprint = document.getElementById('footer-imprint') as HTMLAnchorElement | null
+    const privacy = document.getElementById('footer-privacy') as HTMLAnchorElement | null
+    if (imprint) imprint.href = '/imprint'
+    if (privacy) privacy.href = '/privacy/de'
+  }
+</script>

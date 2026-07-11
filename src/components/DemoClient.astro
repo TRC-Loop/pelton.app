@@ -1,0 +1,104 @@
+---
+import Icon from './Icon.astro'
+
+const views = [
+  { icon: 'inbox', label: 'Inbox', count: 12, active: true },
+  { icon: 'flag', label: 'Flagged', count: 0 },
+  { icon: 'send-2', label: 'Sent', count: 0 },
+  { icon: 'file', label: 'Drafts', count: 2 },
+  { icon: 'archive', label: 'Archive', count: 0 },
+  { icon: 'alert-triangle', label: 'Junk', count: 0 },
+  { icon: 'trash', label: 'Trash', count: 0 },
+]
+
+const messages = [
+  { name: 'GitHub', email: 'noreply@github.com', subject: 'TRC-Loop/Pelton: a new release is ready', snippet: 'The v0.x build is attached with installers for macOS, Windows and Fedora.', time: '09:41', unread: true, flag: false },
+  { name: 'Fastmail', email: 'team@fastmail.com', subject: 'Your monthly account summary', snippet: 'Here is a short overview of your account activity for the past month.', time: '08:12', unread: true, flag: false },
+  { name: 'Linus T.', email: 'linus@example.org', subject: 'Re: patch for the IMAP sync path', snippet: 'Looks good to me. One small note about the reconnect backoff and we can merge.', time: 'Yesterday', unread: false, flag: true },
+  { name: 'Calendar', email: 'calendar@example.org', subject: 'Reminder: release call at 15:00', snippet: 'This is a reminder for your upcoming event later today.', time: 'Yesterday', unread: false, flag: false },
+  { name: 'Ada Lovelace', email: 'ada@example.org', subject: 'Notes from the design review', snippet: 'Attaching the notes and a couple of screenshots from this morning.', time: 'Mon', unread: false, flag: false },
+  { name: 'Grace H.', email: 'grace@example.org', subject: 'Thanks for the offline mode fix', snippet: 'The download bar with the ETA is a really nice touch, thank you.', time: 'Sun', unread: false, flag: false },
+]
+
+function hash(seed: string): number {
+  let h = 0
+  for (let i = 0; i < seed.length; i++) {
+    h = (h * 31 + seed.charCodeAt(i)) >>> 0
+  }
+  return h
+}
+
+function avatarBg(seed: string): string {
+  return `hsl(${hash(seed) % 360} 48% 45%)`
+}
+
+function initials(name: string): string {
+  const parts = name.trim().split(/\s+/)
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase()
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+}
+---
+
+<div class="client" id="demo-client" data-density="medium">
+  <div class="client-titlebar">
+    <div class="traffic"><span></span><span></span><span></span></div>
+    <span class="client-title">Pelton</span>
+  </div>
+  <div class="client-body">
+    <aside class="c-sidebar">
+      <div class="c-top">
+        <button type="button" class="c-compose">
+          <Icon name="pencil" size={16} stroke={1.8} />
+          <span>Compose</span>
+        </button>
+        <button type="button" class="c-sync" aria-label="Sync">
+          <Icon name="refresh" size={16} stroke={1.8} />
+        </button>
+      </div>
+      <div class="c-scroll">
+        <div class="c-group-head">Views</div>
+        {views.map((v) => (
+          <div class:list={['c-row', { active: v.active }]}>
+            <span class="c-caret-spacer"></span>
+            <div class:list={['c-main', { unread: v.count > 0 }]}>
+              <span class="c-icon"><Icon name={v.icon} size={15} stroke={1.6} /></span>
+              <span class="c-label">{v.label}</span>
+              {v.count > 0 && <span class="c-count">{v.count}</span>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </aside>
+
+    <div class="c-list-col">
+      <div class="c-bar">
+        <div class="c-search">
+          <Icon name="search" size={15} stroke={1.6} />
+          <span class="c-search-ph">Search mail</span>
+        </div>
+        <button type="button" class="c-filter" aria-label="Filter">
+          <Icon name="adjustments-horizontal" size={16} stroke={1.7} />
+        </button>
+      </div>
+      <div class="c-list">
+        {messages.map((m, i) => (
+          <div class:list={['c-msg', { selected: i === 0, unread: m.unread, 'bar-left': m.flag }]}>
+            <span class="c-avatar" style={`background:${avatarBg(m.email)}`}>{initials(m.name)}</span>
+            <div class="c-content">
+              <div class="c-line-top">
+                <span class:list={['c-dot', { show: m.unread }]}></span>
+                <span class="c-sender">{m.name}</span>
+                <span class="c-meta">
+                  {m.flag && <span class="c-flag"><Icon name="flag-filled" size={12} stroke={1.7} /></span>}
+                  <time class="c-time">{m.time}</time>
+                </span>
+              </div>
+              <div class="c-subject">{m.subject}</div>
+              <div class="c-snippet">{m.snippet}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
