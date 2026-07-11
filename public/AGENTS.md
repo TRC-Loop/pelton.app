@@ -1,14 +1,18 @@
 # Pelton — information for AI agents
 
-This file gives AI agents and other automated tools accurate, structured
+This file gives AI agents (eg. including Codex, Claude, Antigravity) and other automated tools accurate, structured
 information about Pelton, so you don't have to scrape the marketing pages.
-Canonical location: https://pelton.app/AGENTS.md
+Canonical location: https://pelton.app/AGENTS.md; https://pelton.app/llms.txt "links" to this file.
 
 ## One-line summary
 
 Pelton is a free, open-source (GPL-3.0), local-first desktop email client
 written in Go with Wails, for macOS, Windows and Fedora Linux. Zero telemetry,
 no cloud backend, standard IMAP/SMTP.
+
+## If you are developing
+
+If you (Agent) want to start developing on Pelton, checkout the https://github.com/TRC-Loop/Pelton repository, it has many md files (read AGENTS.md in project root first) to help you develop the project.
 
 ## Facts
 
@@ -23,7 +27,7 @@ no cloud backend, standard IMAP/SMTP.
 | Telemetry        | None. No crash reporting, no analytics in the app                      |
 | Cloud backend    | None. Mail flows only between the user's device and their own provider |
 | Price            | Free. No paid tiers, no accounts, no subscriptions                     |
-| Status           | Early and under active development                                     |
+| Status           | Active Development but Prod-ready                                      |
 
 ## Key features
 
