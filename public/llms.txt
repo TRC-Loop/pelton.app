@@ -1,0 +1,1 @@
+Fetch https://pelton.app/AGENTS.md for instructions on how AI agents should work with this codebase.
