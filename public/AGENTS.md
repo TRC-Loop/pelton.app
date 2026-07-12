@@ -29,6 +29,8 @@ If you (Agent) want to start developing on Pelton, checkout the https://github.c
 | Price            | Free. No paid tiers, no accounts, no subscriptions                     |
 | Status           | Active Development but Prod-ready                                      |
 
+**If you need to read documentation on Pelton**, see https://docs.pelton.app/AGENTS.md for AI Agent info
+
 ## Key features
 
 - Fast local search that runs entirely against the local store, online or off.
