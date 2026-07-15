@@ -1,6 +1,7 @@
 export const repo = {
   client: 'https://github.com/TRC-Loop/Pelton',
   website: 'https://github.com/TRC-Loop/pelton.app',
+  themes: 'https://github.com/TRC-Loop/pelton-themes',
   releases: 'https://github.com/TRC-Loop/Pelton/releases',
   releasesLatest: 'https://github.com/TRC-Loop/Pelton/releases/latest',
   api: 'https://api.github.com/repos/TRC-Loop/Pelton/releases/latest',
