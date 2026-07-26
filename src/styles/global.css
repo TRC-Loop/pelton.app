@@ -629,9 +629,6 @@ section {
   font-weight: var(--fw-semibold);
   color: var(--text-tertiary);
 }
-.c-group-head-2 {
-  margin-top: var(--space-4);
-}
 .c-row {
   position: relative;
   display: flex;
