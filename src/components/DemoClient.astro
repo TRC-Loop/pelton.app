@@ -1,13 +1,20 @@
 ---
 import Icon from './Icon.astro'
 
-const views = [
+// saved searches, each with its own icon and color, as Views actually render
+const savedViews = [
+  { icon: 'stethoscope', label: 'Doctor', count: 3, color: '#12A594' },
+  { icon: 'file-invoice', label: 'Invoices', count: 7, color: '#3E63DD' },
+  { icon: 'receipt', label: 'Receipts', count: 24, color: '#8E4EC6' },
+  { icon: 'plane', label: 'Travel', count: 2, color: '#F76B15' },
+]
+
+const mailboxes = [
   { icon: 'inbox', label: 'Inbox', count: 12, active: true },
   { icon: 'flag', label: 'Flagged', count: 0 },
   { icon: 'send-2', label: 'Sent', count: 0 },
   { icon: 'file', label: 'Drafts', count: 2 },
   { icon: 'archive', label: 'Archive', count: 0 },
-  { icon: 'alert-triangle', label: 'Junk', count: 0 },
   { icon: 'trash', label: 'Trash', count: 0 },
 ]
 
@@ -57,13 +64,25 @@ function initials(name: string): string {
       </div>
       <div class="c-scroll">
         <div class="c-group-head">Views</div>
-        {views.map((v) => (
-          <div class:list={['c-row', { active: v.active }]}>
+        {savedViews.map((v) => (
+          <div class="c-row">
             <span class="c-caret-spacer"></span>
             <div class:list={['c-main', { unread: v.count > 0 }]}>
-              <span class="c-icon"><Icon name={v.icon} size={15} stroke={1.6} /></span>
+              <span class="c-icon" style={`color:${v.color}`}><Icon name={v.icon} size={15} stroke={1.6} /></span>
               <span class="c-label">{v.label}</span>
               {v.count > 0 && <span class="c-count">{v.count}</span>}
+            </div>
+          </div>
+        ))}
+
+        <div class="c-group-head c-group-head-2">Mailboxes</div>
+        {mailboxes.map((m) => (
+          <div class:list={['c-row', { active: m.active }]}>
+            <span class="c-caret-spacer"></span>
+            <div class:list={['c-main', { unread: m.count > 0 }]}>
+              <span class="c-icon"><Icon name={m.icon} size={15} stroke={1.6} /></span>
+              <span class="c-label">{m.label}</span>
+              {m.count > 0 && <span class="c-count">{m.count}</span>}
             </div>
           </div>
         ))}

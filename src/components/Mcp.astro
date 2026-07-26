@@ -1,0 +1,130 @@
+---
+import Icon from './Icon.astro'
+import AnchorHeading from './AnchorHeading.astro'
+import { mcpPrompts, mcpTools, mcpGuarantees, repo } from '../data/site.js'
+
+const config = `{
+  "mcpServers": {
+    "pelton": {
+      "url": "http://127.0.0.1:8765",
+      "headers": {
+        "Authorization": "Bearer <your-token>"
+      }
+    }
+  }
+}`
+---
+
+<section id="mcp" class="mcp-section">
+  <div class="wrap">
+    <div class="section-head mcp-head">
+      <AnchorHeading id="mcp">Ask your agent about your inbox</AnchorHeading>
+      <p>
+        Pelton speaks the Model Context Protocol, so an AI agent you already use can browse, read and
+        search your cached mail. Read-only, on your machine, off until you turn it on.
+      </p>
+    </div>
+
+    <div class="mcp-top">
+      <div class="mcp-chat">
+        <div class="mcp-turn">
+          <span class="mcp-who">You</span>
+          <p>Which invoices arrived this month, and what do they add up to?</p>
+        </div>
+
+        <div class="mcp-calls">
+          <div class="mcp-call">
+            <Icon name="plug-connected" size={13} stroke={1.9} />
+            <code>search_messages</code>
+            <span class="mcp-args">"invoice", after: 30d</span>
+            <span class="mcp-ok"><Icon name="check" size={13} stroke={2.2} /></span>
+          </div>
+          <div class="mcp-call">
+            <Icon name="plug-connected" size={13} stroke={1.9} />
+            <code>get_message</code>
+            <span class="mcp-args">4 messages</span>
+            <span class="mcp-ok"><Icon name="check" size={13} stroke={2.2} /></span>
+          </div>
+        </div>
+
+        <div class="mcp-turn is-agent">
+          <span class="mcp-who">Agent</span>
+          <p>
+            Four invoices this month totalling <strong>€1,284.40</strong>, from Stripe, AWS, Namecheap
+            and Fastmail. The AWS one is the only one still unpaid.
+          </p>
+        </div>
+        <p class="mcp-illus">* Illustrative. Not a real exchange.</p>
+      </div>
+
+      <div class="mcp-prompts">
+        <AnchorHeading id="mcp-prompts" tag="h3">Things worth asking</AnchorHeading>
+        <ul>
+          {mcpPrompts.map((p) => (
+            <li>{p}</li>
+          ))}
+        </ul>
+        <p class="mcp-prompts-note">
+          The last one still ends with you. An agent can compose text for you to paste, but it cannot
+          reach into Pelton and send anything.
+        </p>
+      </div>
+    </div>
+
+    <div class="mcp-tools">
+      <div class="mcp-sub">
+        <AnchorHeading id="mcp-tools" tag="h3">Five tools, all of them read</AnchorHeading>
+        <p>The whole surface an agent gets. There is no sixth tool that writes.</p>
+      </div>
+      <dl class="mcp-tool-list">
+        {mcpTools.map((t) => (
+          <div class="mcp-tool">
+            <dt><code>{t.name}</code></dt>
+            <dd>{t.desc}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+
+    <div class="mcp-bottom">
+      <div class="mcp-setup">
+        <div class="mcp-sub">
+          <AnchorHeading id="mcp-setup" tag="h3">Connecting takes one paste</AnchorHeading>
+          <p>
+            Enable the server, copy the token, and point your client at it. Pelton shows you this exact
+            snippet with your own token already in it.
+          </p>
+        </div>
+        <div class="mcp-snippet">
+          <div class="mcp-snippet-head">
+            <span>MCP client configuration</span>
+            <span class="mcp-snippet-lang">JSON</span>
+          </div>
+          <pre>{config}</pre>
+        </div>
+        <a class="mcp-docs" href={repo.docs} target="_blank" rel="noreferrer noopener">
+          <span>Setup guide in the docs</span>
+          <Icon name="external-link" size={14} />
+        </a>
+      </div>
+
+      <div class="mcp-guarantees">
+        <div class="mcp-sub">
+          <AnchorHeading id="mcp-limits" tag="h3">What it cannot do</AnchorHeading>
+          <p>Handing an agent your mail is a real decision. Here is exactly what you are agreeing to.</p>
+        </div>
+        <div class="mcp-g-list">
+          {mcpGuarantees.map((g) => (
+            <div class="mcp-g">
+              <span class="mcp-g-icon"><Icon name={g.icon} size={17} stroke={1.8} /></span>
+              <div>
+                <h4>{g.title}</h4>
+                <p>{g.body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

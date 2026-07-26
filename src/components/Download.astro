@@ -9,8 +9,9 @@ import { repo } from '../data/site.js'
     <div class="section-head">
       <AnchorHeading id="download">Download Pelton</AnchorHeading>
       <p>
-        Every release ships unsigned installers for macOS, Windows and Fedora. First launch needs one
-        extra step on macOS and Windows, since the builds are not code-signed.
+        Every release ships unsigned builds for macOS, Windows and Linux, the last as a .deb, an .rpm
+        and a plain amd64 binary. First launch needs one extra step on macOS and Windows, since the
+        builds are not code-signed.
       </p>
     </div>
 
@@ -24,12 +25,36 @@ import { repo } from '../data/site.js'
           <span class="dl-icon" data-icon="download"><Icon name="download" size={18} /></span>
           <span class="dl-icon" data-icon="mac" hidden><Icon name="apple" size={18} /></span>
           <span class="dl-icon" data-icon="win" hidden><Icon name="brand-windows" size={18} /></span>
-          <span class="dl-icon" data-icon="fedora" hidden><Icon name="brand-redhat" size={18} /></span>
+          <span class="dl-icon" data-icon="linux" hidden><Icon name="brand-redhat" size={18} /></span>
           <span id="dl-primary-label">Latest release</span>
         </a>
         <a class="btn ghost" href={repo.releases} target="_blank" rel="noreferrer noopener">
           <Icon name="external-link" size={17} />
           <span>All builds and releases</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- a user agent cannot tell Debian from Fedora, so on Linux we list the formats
+         instead of guessing one -->
+    <div class="dl-alts" id="dl-alts" hidden>
+      <span class="dl-alts-label">Other Linux formats</span>
+      <div class="dl-alts-links">
+        <a id="dl-alt-deb" href={repo.releasesLatest} target="_blank" rel="noreferrer noopener">
+          <Icon name="package" size={15} />
+          <span>.deb <span class="dl-alt-hint">Debian, Ubuntu</span></span>
+        </a>
+        <a id="dl-alt-rpm" href={repo.releasesLatest} target="_blank" rel="noreferrer noopener">
+          <Icon name="package" size={15} />
+          <span>.rpm <span class="dl-alt-hint">Fedora</span></span>
+        </a>
+        <a id="dl-alt-bin" href={repo.releasesLatest} target="_blank" rel="noreferrer noopener">
+          <Icon name="terminal" size={15} />
+          <span>Binary <span class="dl-alt-hint">amd64</span></span>
+        </a>
+        <a href={repo.copr} target="_blank" rel="noreferrer noopener">
+          <Icon name="brand-redhat" size={15} />
+          <span>Copr <span class="dl-alt-hint">{repo.coprEnable}</span></span>
         </a>
       </div>
     </div>
@@ -44,14 +69,17 @@ import { repo } from '../data/site.js'
     'mac-arm': /macos-applesilicon\.dmg$/i,
     'mac-intel': /macos-intel\.dmg$/i,
     win: /windows-amd64-installer\.exe$/i,
-    fedora: /linux-fedora.*\.rpm$/i,
+    linux: /linux-amd64\.deb$/i,
+    deb: /linux-amd64\.deb$/i,
+    rpm: /linux-fedora.*\.rpm$/i,
+    bin: /linux-amd64$/i,
   }
 
   const labels: Record<string, string> = {
     'mac-arm': 'macOS (Apple Silicon)',
     'mac-intel': 'macOS (Intel)',
     win: 'Windows',
-    fedora: 'Fedora Linux',
+    linux: 'Linux (.deb)',
   }
 
   async function detectMac(): Promise<'mac-arm' | 'mac-intel'> {
@@ -71,7 +99,7 @@ import { repo } from '../data/site.js'
     if (/Android/i.test(ua)) return null
     if (/Mac/i.test(ua) && !/iPhone|iPad|iPod/i.test(ua)) return await detectMac()
     if (/Win/i.test(ua)) return 'win'
-    if (/Linux/i.test(ua)) return 'fedora'
+    if (/Linux/i.test(ua)) return 'linux'
     return null
   }
 
@@ -113,9 +141,20 @@ import { repo } from '../data/site.js'
       setText('dl-primary-label', `Download for ${labels[platform]}`)
       if (primary) primary.href = url || FALLBACK
 
-      const iconKey = platform.startsWith('mac') ? 'mac' : platform === 'win' ? 'win' : 'fedora'
+      const iconKey = platform.startsWith('mac') ? 'mac' : platform === 'win' ? 'win' : 'linux'
       for (const el of document.querySelectorAll<HTMLElement>('.dl-icon')) {
         el.hidden = el.dataset.icon !== iconKey
+      }
+    }
+
+    // only Linux users need the format picker
+    if (platform === 'linux') {
+      const alts = document.getElementById('dl-alts')
+      if (alts) alts.hidden = false
+      for (const [key, id] of [['deb', 'dl-alt-deb'], ['rpm', 'dl-alt-rpm'], ['bin', 'dl-alt-bin']]) {
+        const url = urlFor(key)
+        const el = document.getElementById(id) as HTMLAnchorElement | null
+        if (el && url) el.href = url
       }
     }
   }

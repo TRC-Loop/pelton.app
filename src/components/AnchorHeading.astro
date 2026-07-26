@@ -8,11 +8,14 @@ interface Props {
 
 const { id, tag = 'h2' } = Astro.props
 const Tag = tag
+// the icon tracks the heading it sits beside, so h3s don't get an h2-sized link
+const iconSize = tag === 'h3' ? 18 : 26
 ---
 
-<Tag class="anchor-heading">
+<!-- h2s sit inside a <section> that already carries the id; h3s have to own theirs -->
+<Tag class:list={['anchor-heading', { 'anchor-heading-sm': tag === 'h3' }]} id={tag === 'h3' ? id : undefined}>
   <a href={`#${id}`} class="heading-anchor" aria-label="Link to this section">
-    <Icon name="link" size={26} stroke={1.8} />
+    <Icon name="link" size={iconSize} stroke={1.8} />
   </a>
   <slot />
 </Tag>

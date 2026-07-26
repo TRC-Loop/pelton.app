@@ -1,0 +1,160 @@
+---
+import Icon from './Icon.astro'
+import AnchorHeading from './AnchorHeading.astro'
+import { whatsNew, release } from '../data/site.js'
+
+const views = [
+  { icon: 'circle-dot', label: 'Unread', count: '12', color: '#3E63DD' },
+  { icon: 'flag', label: 'Flagged', count: '4', color: '#E5484D' },
+  { icon: 'paperclip', label: 'Attachments', count: '31', color: '#12A594' },
+  { icon: 'clock', label: 'This week', count: '108', color: '#8E4EC6' },
+]
+
+const menus = ['File', 'Edit', 'View', 'Mailbox']
+
+const menuItems = [
+  { label: 'New message', kind: 'item' },
+  { label: 'New view', kind: 'item' },
+  { label: '', kind: 'sep' },
+  { label: 'Import theme…', kind: 'item' },
+]
+---
+
+<section id="whats-new" class="wn-section">
+  <div class="wrap">
+    <a class="wn-banner" href={release.url} target="_blank" rel="noreferrer noopener">
+      <img
+        src="/img/whats-new-2026-3.webp"
+        alt={`What's new in Pelton ${release.version}`}
+        width="3840"
+        height="2160"
+        loading="lazy"
+        decoding="async"
+      />
+      <span class="wn-banner-cta">
+        <span>Full changelog</span>
+        <Icon name="arrow-right" size={14} stroke={2} />
+      </span>
+    </a>
+
+    <div class="section-head wn-head">
+      <AnchorHeading id="whats-new">New this release</AnchorHeading>
+    </div>
+
+    <div class="wn-list">
+      {whatsNew.map((f, i) => (
+        <article class="wn-row">
+          <div class="wn-copy">
+            <div class="wn-meta">
+              <span class="wn-index">{String(i + 1).padStart(2, '0')}</span>
+              <span class="wn-rule"></span>
+              <span class="wn-kicker">{f.kicker}</span>
+            </div>
+            <AnchorHeading id={f.slug} tag="h3">{f.title}</AnchorHeading>
+            <p>{f.body}</p>
+            {f.note && <p class="wn-note">{f.note}</p>}
+          </div>
+
+          <div class="wn-visual">
+            {f.visual === 'views' && (
+              <div class="wn-frame wv">
+                <div class="wv-tabs">
+                  <span class="wv-tab">Mail</span>
+                  <span class="wv-tab is-on">Views</span>
+                </div>
+                <div class="wv-rows">
+                  {views.map((v) => (
+                    <div class="wv-row">
+                      <span class="wv-icon" style={`color:${v.color}`}><Icon name={v.icon} size={15} stroke={1.9} /></span>
+                      <span class="wv-label">{v.label}</span>
+                      <span class="wv-count">{v.count}</span>
+                    </div>
+                  ))}
+                </div>
+                <div class="wv-foot">
+                  <Icon name="plus" size={13} stroke={2} />
+                  <span>New view</span>
+                </div>
+              </div>
+            )}
+
+            {f.visual === 'menubar' && (
+              <div class="wn-frame wm">
+                <div class="wm-bar">
+                  {menus.map((m, mi) => (
+                    <span class:list={['wm-chip', { 'is-open': mi === 2 }]}>
+                      <Icon name="grip-vertical" size={13} stroke={1.9} />
+                      <span>{m}</span>
+                    </span>
+                  ))}
+                  <span class="wm-add"><Icon name="plus" size={13} stroke={2} /></span>
+                  <span class="wm-done">Done</span>
+                </div>
+                <div class="wm-menu">
+                  {menuItems.map((it) =>
+                    it.kind === 'sep' ? (
+                      <span class="wm-sep"></span>
+                    ) : (
+                      <span class="wm-item">
+                        <Icon name="grip-vertical" size={13} stroke={1.9} />
+                        <span class="wm-item-label">{it.label}</span>
+                        <span class="wm-eye"><Icon name="eye" size={13} stroke={1.9} /></span>
+                      </span>
+                    ),
+                  )}
+                  <span class="wm-item is-add">
+                    <Icon name="plus" size={13} stroke={2} />
+                    <span class="wm-item-label">Add item</span>
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {f.visual === 'vip' && (
+              <div class="wn-toasts">
+                <div class="wn-frame wt">
+                  <div class="wt-head">
+                    <span class="wt-app">
+                      <img src="/img/pelton-logo.webp" alt="" width="12" height="14" />
+                      <span>Pelton</span>
+                    </span>
+                    <span class="wt-time">now</span>
+                  </div>
+                  <div class="wt-from">
+                    <span class="wt-star"><Icon name="star-filled" size={13} /></span>
+                    <span>Ada Lovelace</span>
+                  </div>
+                  <p class="wt-subj">Re: contract review notes</p>
+                </div>
+                <div class="wn-vip-list">
+                  <span class="wn-vip-head"><Icon name="bell" size={14} stroke={1.9} /><span>VIP senders</span></span>
+                  <span class="wn-vip-row"><Icon name="star-filled" size={12} /><span>ada@example.org</span></span>
+                  <span class="wn-vip-row"><Icon name="star-filled" size={12} /><span>grace@example.org</span></span>
+                </div>
+              </div>
+            )}
+
+            {f.visual === 'mailto' && (
+              <div class="wn-frame wl">
+                <div class="wl-link">
+                  <Icon name="link" size={14} stroke={1.9} />
+                  <span class="wl-href">mailto:ada@example.org?subject=Offline%20sync</span>
+                </div>
+                <span class="wl-arrow"><Icon name="arrow-right" size={16} stroke={2} /></span>
+                <div class="wl-compose">
+                  <div class="wl-compose-head">
+                    <Icon name="pencil" size={13} stroke={1.9} />
+                    <span>New message</span>
+                  </div>
+                  <div class="wl-field"><span class="wl-label">To</span><span class="wl-value">ada@example.org</span></div>
+                  <div class="wl-field"><span class="wl-label">Subject</span><span class="wl-value">Offline sync</span></div>
+                  <div class="wl-send"><Icon name="send-2" size={13} stroke={1.9} /><span>Send</span></div>
+                </div>
+              </div>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

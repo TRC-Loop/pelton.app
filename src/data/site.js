@@ -24,7 +24,7 @@ export const features = [
   {
     icon: 'device-desktop',
     title: 'Cross-platform',
-    body: 'macOS, Windows, Fedora.',
+    body: 'macOS, Windows, Linux.',
     layout: 'vertical',
     visual: 'os-stack',
   },
@@ -46,6 +46,18 @@ export const features = [
     body: 'Pin a message or bulk-download everything since a date for offline reading.',
     layout: 'wide',
     visual: 'progress',
+  },
+  {
+    icon: 'refresh',
+    title: 'New mail lands promptly',
+    body: 'Pelton resyncs off the idle connection the moment the server says something changed, instead of waiting for the next poll.',
+    layout: 'wide',
+  },
+  {
+    icon: 'bell',
+    title: 'Native notifications',
+    body: 'Notification Center, Windows toasts and Linux dbus, for all new inbox mail or only your starred senders. Both switches start off.',
+    layout: 'wide',
   },
   {
     icon: 'eye',
@@ -85,6 +97,110 @@ export const features = [
     body: 'Density, themes and layout, tuned to your workflow.',
     layout: 'half',
   },
+  {
+    icon: 'adjustments-horizontal',
+    title: 'Build a theme',
+    body: 'A proper color picker with alpha, editable author and version, and custom CSS. Export the lot as one file.',
+    layout: 'half',
+    visual: 'palette-strip',
+  },
+  {
+    icon: 'world',
+    title: 'Theme gallery',
+    body: 'Browse themes.pelton.app from Settings. Nothing is fetched into the app; downloads come back through the normal import.',
+    layout: 'half',
+  },
+  {
+    icon: 'package',
+    title: 'Import just the parts you want',
+    body: 'When a theme carries both colors and a stylesheet, choose either or both. Remote references are always stripped.',
+    layout: 'half',
+  },
+]
+
+export const release = {
+  version: '2026.3',
+  url: 'https://github.com/TRC-Loop/Pelton/releases/tag/v2026.3',
+}
+
+export const whatsNew = [
+  {
+    slug: 'views',
+    kicker: 'Views',
+    title: 'Preset searches that keep themselves current',
+    body: 'A View is a name, an icon and a filter: free text, from/to/subject, a relative date window, and scope like unread-only, flagged or has-attachment. Every View re-runs on startup and after each sync, so the count beside it is live and opening one is instant.',
+    note: 'Off by default. Enable them under Settings → Sidebar, as a group in the sidebar or their own tab.',
+    visual: 'views',
+  },
+  {
+    slug: 'menu-bar',
+    kicker: 'Menu bar',
+    title: 'Rearrange the menu bar on the menu bar',
+    body: 'Press Edit menu bar and the live bar turns into its own editor. Drag menus and items into the order you want, hide what you never reach for, and add your own entries, submenus and separators. Built-ins are only ever hidden, never destroyed, so Reset always brings them back.',
+    visual: 'menubar',
+  },
+  {
+    slug: 'vip-senders',
+    kicker: 'VIP senders',
+    title: 'The people who get through',
+    body: 'Star a sender and their mail raises a native notification, whether that is Notification Center, a Windows toast or Linux dbus, even when general new-mail alerts are off. Matching is on the address, so a sender renaming themselves never breaks it.',
+    visual: 'vip',
+  },
+  {
+    slug: 'mailto',
+    kicker: 'mailto:',
+    title: 'Click a mail link anywhere, land in Pelton',
+    body: 'Pelton can register as your system’s mailto: handler, offered once during onboarding and after that as one quiet line in About. Links open a compose with the recipient, subject and body already filled in, and a second click hands the draft to the window you already have open instead of starting a second Pelton.',
+    visual: 'mailto',
+  },
+]
+
+export const mcpPrompts = [
+  'Summarise everything unread from my team this week.',
+  'Which invoices arrived this month, and what do they add up to?',
+  'Find the thread where we settled the lease terms.',
+  'Draft a reply to Ada. I’ll send it myself.',
+]
+
+export const mcpTools = [
+  { name: 'list_accounts', desc: 'The configured mail accounts.' },
+  { name: 'list_folders', desc: 'The folders of one account.' },
+  { name: 'list_messages', desc: 'Messages in a folder, newest first, as summaries.' },
+  { name: 'get_message', desc: 'One full message: headers, plain-text and HTML body, attachment metadata.' },
+  { name: 'search_messages', desc: 'Ranked full-text search, with optional from, to and subject scopes.' },
+]
+
+export const mcpGuarantees = [
+  {
+    icon: 'lock',
+    title: 'Off until you say so',
+    body: 'Nothing listens until you enable it under Settings → External.',
+  },
+  {
+    icon: 'shield-lock',
+    title: 'Loopback only',
+    body: 'Bound to 127.0.0.1. A guard makes binding to a routable address impossible, so nothing else on your network can reach it.',
+  },
+  {
+    icon: 'eye',
+    title: 'Read-only, structurally',
+    body: 'None of the five tools can send, move, flag or delete. The interface they are built on has no method that writes.',
+  },
+  {
+    icon: 'shield-check',
+    title: 'Token on every request',
+    body: 'Checked in constant time before a request reaches the server, so an unauthorized caller cannot even list the tools. Regenerate it to revoke access.',
+  },
+  {
+    icon: 'paperclip',
+    title: 'Never attachment bytes',
+    body: 'get_message returns an attachment’s name, type and size. The file contents stay on your disk.',
+  },
+  {
+    icon: 'cloud-off',
+    title: 'Pelton calls no AI service',
+    body: 'There is no model, no key and no cloud in Pelton. Your agent runs wherever you already run it and reads the mail cached on your machine.',
+  },
 ]
 
 export const faq = [
@@ -115,6 +231,18 @@ export const faq = [
   {
     q: 'Is there any telemetry or automated crash reporting?',
     a: 'No. Pelton has zero telemetry. If you hit a bug, opening an issue on GitHub is what helps.',
+  },
+  {
+    q: 'Does the MCP server send my mail to an AI company?',
+    a: 'No. Pelton contains no model, no API key and no call to any AI provider. The MCP server is a local endpoint bound to 127.0.0.1 that an agent you run connects to, and it is off until you enable it. Whatever that agent then does with the mail it reads is between you and whoever makes it, so pick a client you trust.',
+  },
+  {
+    q: 'Can an AI agent send or delete mail through Pelton?',
+    a: 'No. All five MCP tools are read-only, and the interface behind them has no method that writes. An agent can browse, read and search; it cannot send, move, flag or delete. It also never receives attachment file contents, only their names, types and sizes.',
+  },
+  {
+    q: 'What are Views, and why do I not see them?',
+    a: 'A View is a saved search you can open like a folder, with a live count next to it. They are hidden by default: turn them on under Settings, Sidebar, either as a group inside the sidebar or as their own tab. You can also create one straight from the search bar with "Save as view".',
   },
 ]
 
