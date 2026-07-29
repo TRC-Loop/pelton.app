@@ -52,14 +52,11 @@ import { repo } from '../../data/site.js'
         <h2>3. Zusatzbedingung nach &sect; 7 lit. a GPLv3</h2>
         <p>
           F&uuml;r Kopien von Pelton, die von der Stellar Foundry GmbH bereitgestellt werden,
-          treten die Ziffern 4 bis 8 dieser Bedingungen an die Stelle der Gew&auml;hrleistungs-
+          treten die Ziffern 4 bis 9 dieser Bedingungen an die Stelle der Gew&auml;hrleistungs-
           und Haftungsregelungen in &sect;&sect; 15 und 16 GPLv3. &sect; 7 lit. a GPLv3
-          erlaubt eine solche abweichende Regelung ausdr&uuml;cklich.
-        </p>
-        <p>
-          Wer Pelton weitergibt, darf diese Zusatzbedingung nach &sect; 7 Abs. 2 GPLv3
-          entfernen. Die Haftung des Weitergebenden f&uuml;r die von ihm verbreitete Kopie
-          bleibt davon unber&uuml;hrt.
+          erlaubt eine solche abweichende Regelung ausdr&uuml;cklich. F&uuml;r Kopien, die
+          Dritte weitergeben, gelten sie nicht; die Haftung des Weitergebenden richtet sich nach
+          den Bedingungen, unter denen er die Kopie bereitstellt.
         </p>
 
         <h2>4. Keine Gew&auml;hrleistung</h2>
@@ -70,9 +67,10 @@ import { repo } from '../../data/site.js'
           Betriebssystem, E-Mail-Anbieter oder Protokollstand zusammenarbeitet.
         </p>
         <p>
-          Da die &Uuml;berlassung unentgeltlich erfolgt, haften wir f&uuml;r Sachm&auml;ngel
-          nach &sect; 524 BGB nur bei arglistigem Verschweigen eines Mangels und f&uuml;r
-          Rechtsm&auml;ngel entsprechend &sect; 523 BGB.
+          Findet auf die unentgeltliche &Uuml;berlassung von Software Schenkungsrecht
+          Anwendung, haften wir f&uuml;r Sachm&auml;ngel entsprechend &sect; 524 BGB und
+          f&uuml;r Rechtsm&auml;ngel entsprechend &sect; 523 BGB nur bei arglistigem
+          Verschweigen eines Mangels.
         </p>
 
         <h2>5. Haftung</h2>
@@ -84,21 +82,33 @@ import { repo } from '../../data/site.js'
           Produkthaftungsgesetz.
         </p>
         <p>
-          b) Im &Uuml;brigen ist unsere Haftung nach &sect; 521 BGB auf Vorsatz und grobe
-          Fahrl&auml;ssigkeit beschr&auml;nkt, da wir Pelton unentgeltlich &uuml;berlassen.
-        </p>
-        <p>
-          c) Soweit wir gleichwohl f&uuml;r einfache Fahrl&auml;ssigkeit bei der Verletzung einer
-          wesentlichen Pflicht haften, ist die Haftung auf den bei Bereitstellung
+          b) Bei einfach fahrl&auml;ssiger Verletzung einer wesentlichen Pflicht, also einer
+          Pflicht, deren Erf&uuml;llung die bestimmungsgem&auml;&szlig;e Nutzung von Pelton
+          &uuml;berhaupt erst erm&ouml;glicht, ist unsere Haftung auf den bei Bereitstellung
           vorhersehbaren, typischerweise eintretenden Schaden begrenzt.
         </p>
         <p>
-          d) Eine weitergehende Haftung ist ausgeschlossen. Die vorstehenden Beschr&auml;nkungen
-          gelten auch zugunsten unserer gesetzlichen Vertreter, Mitarbeiter und
-          Erf&uuml;llungsgehilfen.
+          c) Im &Uuml;brigen ist unsere Haftung ausgeschlossen.
+        </p>
+        <p>
+          d) Findet auf die unentgeltliche &Uuml;berlassung Schenkungsrecht Anwendung, bleibt die
+          gesetzliche Haftungsprivilegierung nach &sect; 521 BGB, die unsere Haftung auf Vorsatz
+          und grobe Fahrl&auml;ssigkeit beschr&auml;nkt, unber&uuml;hrt.
+        </p>
+        <p>
+          e) Die vorstehenden Beschr&auml;nkungen gelten auch zugunsten unserer gesetzlichen
+          Vertreter, Mitarbeiter und Erf&uuml;llungsgehilfen.
         </p>
 
-        <h2>6. Datenintegrit&auml;t und Backups</h2>
+        <h2>6. Zwingende Verbraucherrechte</h2>
+        <p>
+          Zwingende Rechte, die Verbrauchern nach den Vorschriften &uuml;ber Vertr&auml;ge
+          &uuml;ber digitale Produkte (&sect;&sect; 327 ff. BGB) zustehen, bleiben unber&uuml;hrt,
+          soweit diese Vorschriften anwendbar sind. Die Ziffern 4, 5 und 8 gelten insoweit nur in
+          dem Umfang, in dem abweichende Vereinbarungen nach &sect; 327h BGB zul&auml;ssig sind.
+        </p>
+
+        <h2>7. Datenintegrit&auml;t und Backups</h2>
         <p>
           Pelton greift auf Ihre echten Postf&auml;cher zu und speichert Nachrichten und
           Metadaten lokal auf Ihrem Ger&auml;t. Wir sichern nicht zu, dass lokal gespeicherte
@@ -112,7 +122,7 @@ import { repo } from '../../data/site.js'
           erfolgt auf eigene Gefahr.
         </p>
 
-        <h2>7. Entwicklungsstand, Support und Updates</h2>
+        <h2>8. Entwicklungsstand, Support und Updates</h2>
         <p>
           Pelton befindet sich in aktiver Entwicklung. Funktionen k&ouml;nnen sich &auml;ndern,
           eingeschr&auml;nkt werden oder entfallen, und Datenformate k&ouml;nnen sich zwischen
@@ -127,7 +137,7 @@ import { repo } from '../../data/site.js'
           <a href={repo.client} target="_blank" rel="noreferrer noopener">Fehler melden</a>
         </p>
 
-        <h2>8. Drittanbieter</h2>
+        <h2>9. Drittanbieter</h2>
         <p>
           Pelton kommuniziert direkt mit den von Ihnen eingerichteten E-Mail-Anbietern und, sofern
           Sie das konfigurieren, mit weiteren Diensten wie MCP-Servern. Wir betreiben keine Server
@@ -139,7 +149,7 @@ import { repo } from '../../data/site.js'
           Erweiterungen und Konfigurationen, die Sie von Dritten beziehen.
         </p>
 
-        <h2>9. Sicherheitsl&uuml;cken melden</h2>
+        <h2>10. Sicherheitsl&uuml;cken melden</h2>
         <p>
           Sicherheitsl&uuml;cken melden Sie bitte vertraulich an
           <a href={`mailto:${repo.email}`}>{repo.email}</a> und nicht als &ouml;ffentliches
@@ -147,20 +157,19 @@ import { repo } from '../../data/site.js'
           beschrieben.
         </p>
 
-        <h2>10. Anwendbares Recht</h2>
+        <h2>11. Anwendbares Recht</h2>
         <p>
           Es gilt das Recht der Bundesrepublik Deutschland. Sind Sie Verbraucher, bleiben die
           zwingenden Verbraucherschutzvorschriften des Staates unber&uuml;hrt, in dem Sie Ihren
           gew&ouml;hnlichen Aufenthalt haben.
         </p>
 
-        <h2>11. Salvatorische Klausel und &Auml;nderungen</h2>
+        <h2>12. &Auml;nderungen</h2>
         <p>
-          Sollte eine Bestimmung dieser Bedingungen unwirksam sein, bleibt die Wirksamkeit der
-          &uuml;brigen Bestimmungen unber&uuml;hrt. Wir k&ouml;nnen diese Bedingungen f&uuml;r
-          k&uuml;nftige Versionen anpassen. F&uuml;r eine bereits von Ihnen bezogene Version
-          gilt die Fassung, die zum Zeitpunkt des Downloads ver&ouml;ffentlicht war. Die aktuelle
-          Fassung ist stets unter pelton.app/terms/de abrufbar.
+          Wir k&ouml;nnen diese Bedingungen f&uuml;r k&uuml;nftige Versionen anpassen. F&uuml;r
+          eine bereits von Ihnen bezogene Version gilt die Fassung, die zum Zeitpunkt des
+          Downloads ver&ouml;ffentlicht war. Die aktuelle Fassung ist stets unter
+          pelton.app/terms/de abrufbar.
         </p>
 
         <p class="legal-source">Diese deutsche Fassung ist ma&szlig;geblich; die <a href="/terms">englische Fassung</a> ist eine &Uuml;bersetzung zur Bequemlichkeit.</p>

@@ -48,14 +48,11 @@ import { repo } from '../data/site.js'
 
         <h2>3. Additional term under GPLv3 section 7(a)</h2>
         <p>
-          For copies of Pelton provided by Stellar Foundry GmbH, sections 4 to 8 of these terms
+          For copies of Pelton provided by Stellar Foundry GmbH, sections 4 to 9 of these terms
           take the place of the warranty and liability provisions in sections 15 and 16 of the
-          GPLv3. Section 7(a) of the GPLv3 expressly permits such differing terms.
-        </p>
-        <p>
-          Anyone redistributing Pelton may remove this additional term under section 7,
-          paragraph 2 of the GPLv3. That does not affect the redistributor's own liability for
-          the copy they distribute.
+          GPLv3. Section 7(a) of the GPLv3 expressly permits such differing terms. They do not
+          apply to copies distributed by third parties; a redistributor's liability follows the
+          terms under which they provide their copy.
         </p>
 
         <h2>4. No warranty</h2>
@@ -66,9 +63,9 @@ import { repo } from '../data/site.js'
           implementation.
         </p>
         <p>
-          Because the software is provided free of charge, we are liable for defects in quality
-          only where we fraudulently concealed a defect (section 524 German Civil Code) and for
-          defects in title accordingly (section 523 German Civil Code).
+          Where German gift law applies to the free provision of software, we are liable for
+          defects in quality and in title only where we fraudulently concealed a defect
+          (sections 524 and 523 German Civil Code applied accordingly).
         </p>
 
         <h2>5. Liability</h2>
@@ -79,20 +76,33 @@ import { repo } from '../data/site.js'
           particular under the German Product Liability Act.
         </p>
         <p>
-          b) Otherwise our liability is limited to intent and gross negligence under section 521
-          of the German Civil Code, because we provide Pelton free of charge.
+          b) For the ordinarily negligent breach of a material obligation, meaning an obligation
+          whose fulfilment is what makes using Pelton as intended possible at all, our liability
+          is limited to the damage that was foreseeable and typical at the time the software was
+          provided.
         </p>
         <p>
-          c) Where we are nevertheless liable for ordinary negligence in breaching a material
-          obligation, that liability is limited to the damage that was foreseeable and typical at
-          the time the software was provided.
+          c) Any other liability is excluded.
         </p>
         <p>
-          d) Any liability beyond this is excluded. The limitations above also apply for the
-          benefit of our legal representatives, employees and agents.
+          d) Where German gift law applies to the free provision of the software, the statutory
+          privilege under section 521 German Civil Code, limiting our liability to intent and
+          gross negligence, remains unaffected.
+        </p>
+        <p>
+          e) The limitations above also apply for the benefit of our legal representatives,
+          employees and agents.
         </p>
 
-        <h2>6. Data integrity and backups</h2>
+        <h2>6. Mandatory consumer rights</h2>
+        <p>
+          Mandatory rights consumers have under the German provisions on contracts for digital
+          products (sections 327 et seq. German Civil Code) remain unaffected where those
+          provisions apply. Sections 4, 5 and 8 of these terms then apply only as far as
+          differing agreements are permitted under section 327h German Civil Code.
+        </p>
+
+        <h2>7. Data integrity and backups</h2>
         <p>
           Pelton connects to your live mailboxes and stores messages and metadata locally on your
           device. We do not warrant that locally stored data is complete, permanently available or
@@ -104,7 +114,7 @@ import { repo } from '../data/site.js'
           backup of your data is your responsibility. You use the software at your own risk.
         </p>
 
-        <h2>7. Development status, support and updates</h2>
+        <h2>8. Development status, support and updates</h2>
         <p>
           Pelton is under active development. Features may change, be restricted or be removed,
           and data formats may change between versions.
@@ -112,13 +122,13 @@ import { repo } from '../data/site.js'
         <p>
           You can report bugs as an issue in the repository and we do read those reports. There is
           no entitlement to a reply, a fix, further development, updates or any level of
-          availability.
+          availability, unless mandatory law provides otherwise.
         </p>
         <p>
           <a href={repo.client} target="_blank" rel="noreferrer noopener">Report an issue</a>
         </p>
 
-        <h2>8. Third-party services</h2>
+        <h2>9. Third-party services</h2>
         <p>
           Pelton communicates directly with the email providers you set up and, if you configure
           them, with further services such as MCP servers. We operate no servers in the data path
@@ -130,26 +140,25 @@ import { repo } from '../data/site.js'
           configurations you obtain from third parties.
         </p>
 
-        <h2>9. Reporting security issues</h2>
+        <h2>10. Reporting security issues</h2>
         <p>
           Please report security vulnerabilities confidentially to
           <a href={`mailto:${repo.email}`}>{repo.email}</a> rather than as a public issue. The
           process is described in SECURITY.md in the client repository.
         </p>
 
-        <h2>10. Governing law</h2>
+        <h2>11. Governing law</h2>
         <p>
           These terms are governed by the law of the Federal Republic of Germany. If you are a
           consumer, the mandatory consumer protection provisions of the country in which you have
           your habitual residence remain unaffected.
         </p>
 
-        <h2>11. Severability and changes</h2>
+        <h2>12. Changes</h2>
         <p>
-          If any provision of these terms is invalid, the remaining provisions stay in force. We
-          may adjust these terms for future versions. For a version you have already downloaded,
-          the wording published at the time of that download applies. The current version is
-          always available at pelton.app/terms.
+          We may adjust these terms for future versions. For a version you have already
+          downloaded, the wording published at the time of that download applies. The current
+          version is always available at pelton.app/terms.
         </p>
 
         <p class="legal-source">This is an English translation for convenience; the <a href="/terms/de">German version</a> is authoritative.</p>
