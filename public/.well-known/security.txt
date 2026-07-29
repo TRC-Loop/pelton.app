@@ -1,0 +1,6 @@
+Contact: mailto:pelton@arne.sh
+Contact: https://github.com/TRC-Loop/Pelton/security/advisories/new
+Policy: https://github.com/TRC-Loop/Pelton/blob/main/SECURITY.md
+Canonical: https://pelton.app/.well-known/security.txt
+Preferred-Languages: en, de
+Expires: 2027-07-30T00:00:00.000Z
