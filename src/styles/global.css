@@ -1523,6 +1523,61 @@ section {
 .dl-icon[hidden] {
   display: none;
 }
+.dl-modal {
+  width: min(480px, calc(100vw - 32px));
+  padding: 28px;
+  border: var(--hairline) solid var(--border-default);
+  border-radius: 14px;
+  background: var(--surface-raised);
+  color: var(--text-primary);
+}
+.dl-modal::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+.dl-modal h3 {
+  margin: 0 0 10px;
+  font-size: 19px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.01em;
+}
+.dl-modal p {
+  margin: 0 0 14px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.dl-modal-links {
+  display: flex;
+  gap: 8px;
+  font-size: 13px;
+}
+.dl-modal-links span {
+  color: var(--text-tertiary);
+}
+.dl-modal-check {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 18px 0 22px;
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.5;
+  cursor: pointer;
+}
+.dl-modal-check input {
+  margin: 2px 0 0;
+  accent-color: var(--accent);
+  flex: none;
+}
+.dl-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.dl-modal-actions .btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
 .dl-others {
   margin-top: 30px;
 }

@@ -1,0 +1,169 @@
+---
+import Base from '../layouts/Base.astro'
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+import { repo } from '../data/site.js'
+---
+
+<Base
+  title="Terms and Liability — Pelton"
+  description="Terms under which Pelton is provided free of charge, covering warranty, liability and data integrity."
+  noindex
+>
+  <Nav />
+  <main>
+    <section class="legal">
+      <div class="wrap legal-wrap">
+        <h1>Terms and Liability</h1>
+        <p class="legal-note">Last updated: 29 July 2026</p>
+        <nav class="legal-switch" aria-label="Language">
+          <a href="/terms" class="is-active">English</a>
+          <span>&middot;</span>
+          <a href="/terms/de">Deutsch</a>
+        </nav>
+        <nav class="legal-links" aria-label="Legal">
+          <a href="/imprint/en">Imprint</a>
+          <a href="/privacy">Privacy Policy</a>
+        </nav>
+
+        <h2>1. Provider and scope</h2>
+        <p>
+          These terms apply to Pelton as provided free of charge by Stellar Foundry GmbH,
+          Thomas-Mann-Stra&szlig;e 19, 53111 Bonn, Germany, through pelton.app and the releases
+          in the project repository. They cover the software itself, not your use of this
+          website, which is covered by our <a href="/privacy">privacy policy</a>.
+        </p>
+
+        <h2>2. License</h2>
+        <p>
+          Pelton is free software licensed under the GNU General Public License, version 3
+          (GPLv3). Your rights to use, copy, modify and redistribute it follow exclusively from
+          the GPLv3. These terms do not restrict the rights granted by the GPLv3 and do not
+          impose additional obligations on using the software.
+        </p>
+        <p>
+          Full license text:
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noreferrer noopener">gnu.org/licenses/gpl-3.0</a>
+        </p>
+
+        <h2>3. Additional term under GPLv3 section 7(a)</h2>
+        <p>
+          For copies of Pelton provided by Stellar Foundry GmbH, sections 4 to 9 of these terms
+          take the place of the warranty and liability provisions in sections 15 and 16 of the
+          GPLv3. Section 7(a) of the GPLv3 expressly permits such differing terms. They do not
+          apply to copies distributed by third parties; a redistributor's liability follows the
+          terms under which they provide their copy.
+        </p>
+
+        <h2>4. No warranty</h2>
+        <p>
+          Pelton is provided free of charge and as it stands. We do not warrant that the software
+          is free of defects, that it is continuously available, that it is fit for any particular
+          purpose, or that it works with any given operating system, email provider or protocol
+          implementation.
+        </p>
+        <p>
+          Where German gift law applies to the free provision of software, we are liable for
+          defects in quality and in title only where we fraudulently concealed a defect
+          (sections 524 and 523 German Civil Code applied accordingly).
+        </p>
+
+        <h2>5. Liability</h2>
+        <p>
+          a) We are liable without limitation for intent and gross negligence, for injury to life,
+          body or health, for the fraudulent concealment of a defect, to the extent of any
+          guarantee we have expressly given, and in all cases of mandatory statutory liability, in
+          particular under the German Product Liability Act.
+        </p>
+        <p>
+          b) For the ordinarily negligent breach of a material obligation, meaning an obligation
+          whose fulfilment is what makes using Pelton as intended possible at all, our liability
+          is limited to the damage that was foreseeable and typical at the time the software was
+          provided.
+        </p>
+        <p>
+          c) Any other liability is excluded.
+        </p>
+        <p>
+          d) Where German gift law applies to the free provision of the software, the statutory
+          privilege under section 521 German Civil Code, limiting our liability to intent and
+          gross negligence, remains unaffected.
+        </p>
+        <p>
+          e) The limitations above also apply for the benefit of our legal representatives,
+          employees and agents.
+        </p>
+
+        <h2>6. Mandatory consumer rights</h2>
+        <p>
+          Mandatory rights consumers have under the German provisions on contracts for digital
+          products (sections 327 et seq. German Civil Code) remain unaffected where those
+          provisions apply. Sections 4, 5 and 8 of these terms then apply only as far as
+          differing agreements are permitted under section 327h German Civil Code.
+        </p>
+
+        <h2>7. Data integrity and backups</h2>
+        <p>
+          Pelton connects to your live mailboxes and stores messages and metadata locally on your
+          device. We do not warrant that locally stored data is complete, permanently available or
+          recoverable, nor that an action you trigger in Pelton produces the expected result on
+          your email provider's server. Deletions can be permanent.
+        </p>
+        <p>
+          Pelton is not a backup tool and does not replace one. Keeping your own independent
+          backup of your data is your responsibility. You use the software at your own risk.
+        </p>
+
+        <h2>8. Development status, support and updates</h2>
+        <p>
+          Pelton is under active development. Features may change, be restricted or be removed,
+          and data formats may change between versions.
+        </p>
+        <p>
+          You can report bugs as an issue in the repository and we do read those reports. There is
+          no entitlement to a reply, a fix, further development, updates or any level of
+          availability, unless mandatory law provides otherwise.
+        </p>
+        <p>
+          <a href={repo.client} target="_blank" rel="noreferrer noopener">Report an issue</a>
+        </p>
+
+        <h2>9. Third-party services</h2>
+        <p>
+          Pelton communicates directly with the email providers you set up and, if you configure
+          them, with further services such as MCP servers. We operate no servers in the data path
+          and have no access to your messages or credentials.
+        </p>
+        <p>
+          The respective provider is solely responsible for the performance, availability,
+          security and terms of those services. The same applies to themes, extensions and
+          configurations you obtain from third parties.
+        </p>
+
+        <h2>10. Reporting security issues</h2>
+        <p>
+          Please report security vulnerabilities confidentially to
+          <a href={`mailto:${repo.email}`}>{repo.email}</a> rather than as a public issue. The
+          process is described in SECURITY.md in the client repository.
+        </p>
+
+        <h2>11. Governing law</h2>
+        <p>
+          These terms are governed by the law of the Federal Republic of Germany. If you are a
+          consumer, the mandatory consumer protection provisions of the country in which you have
+          your habitual residence remain unaffected.
+        </p>
+
+        <h2>12. Changes</h2>
+        <p>
+          We may adjust these terms for future versions. For a version you have already
+          downloaded, the wording published at the time of that download applies. The current
+          version is always available at pelton.app/terms.
+        </p>
+
+        <p class="legal-source">This is an English translation for convenience; the <a href="/terms/de">German version</a> is authoritative.</p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
