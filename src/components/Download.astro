@@ -21,7 +21,7 @@ import { repo } from '../data/site.js'
         <p id="dl-sub">Detecting your platform and the newest build.</p>
       </div>
       <div class="dl-buttons">
-        <a class="btn accent" id="dl-primary" href={repo.releasesLatest} target="_blank" rel="noreferrer noopener">
+        <a class="btn accent" id="dl-primary" href={repo.releasesLatest} data-gated target="_blank" rel="noreferrer noopener">
           <span class="dl-icon" data-icon="download"><Icon name="download" size={18} /></span>
           <span class="dl-icon" data-icon="mac" hidden><Icon name="apple" size={18} /></span>
           <span class="dl-icon" data-icon="win" hidden><Icon name="brand-windows" size={18} /></span>
@@ -40,15 +40,15 @@ import { repo } from '../data/site.js'
     <div class="dl-alts" id="dl-alts" hidden>
       <span class="dl-alts-label">Other Linux formats</span>
       <div class="dl-alts-links">
-        <a id="dl-alt-deb" href={repo.releasesLatest} target="_blank" rel="noreferrer noopener">
+        <a id="dl-alt-deb" href={repo.releasesLatest} data-gated target="_blank" rel="noreferrer noopener">
           <Icon name="package" size={15} />
           <span>.deb <span class="dl-alt-hint">Debian, Ubuntu</span></span>
         </a>
-        <a id="dl-alt-rpm" href={repo.releasesLatest} target="_blank" rel="noreferrer noopener">
+        <a id="dl-alt-rpm" href={repo.releasesLatest} data-gated target="_blank" rel="noreferrer noopener">
           <Icon name="package" size={15} />
           <span>.rpm <span class="dl-alt-hint">Fedora</span></span>
         </a>
-        <a id="dl-alt-bin" href={repo.releasesLatest} target="_blank" rel="noreferrer noopener">
+        <a id="dl-alt-bin" href={repo.releasesLatest} data-gated target="_blank" rel="noreferrer noopener">
           <Icon name="terminal" size={15} />
           <span>Binary <span class="dl-alt-hint">amd64</span></span>
         </a>
@@ -59,6 +59,28 @@ import { repo } from '../data/site.js'
       </div>
     </div>
   </div>
+
+  <dialog class="dl-modal" id="dl-modal" aria-labelledby="dl-modal-title">
+    <h3 id="dl-modal-title">Before you download</h3>
+    <p id="dl-modal-body">
+      Pelton is free software under the GPL-3.0. It comes without any warranty and you use it at
+      your own risk. It connects to your real mailboxes, deletions can be permanent, and Pelton is
+      not a backup tool. Keep your own backup of anything you cannot afford to lose.
+    </p>
+    <p class="dl-modal-links">
+      <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noreferrer noopener">GPL-3.0</a>
+      <span>&middot;</span>
+      <a href="/terms" target="_blank" rel="noreferrer noopener" id="dl-modal-terms">Terms and liability</a>
+    </p>
+    <label class="dl-modal-check">
+      <input type="checkbox" id="dl-modal-accept" />
+      <span id="dl-modal-check-label">I have read and accept the terms and the liability notice.</span>
+    </label>
+    <div class="dl-modal-actions">
+      <button type="button" class="btn ghost" id="dl-modal-cancel">Cancel</button>
+      <button type="button" class="btn accent" id="dl-modal-confirm" disabled>Download</button>
+    </div>
+  </dialog>
 </section>
 
 <script>
@@ -159,5 +181,68 @@ import { repo } from '../data/site.js'
     }
   }
 
+  const de = {
+    title: 'Vor dem Download',
+    body:
+      'Pelton ist freie Software unter der GPL-3.0. Die Bereitstellung erfolgt ohne ' +
+      'Gewährleistung, die Nutzung auf eigene Gefahr. Pelton greift auf deine echten ' +
+      'Postfächer zu, Löschvorgänge können endgültig sein, und Pelton ist kein ' +
+      'Backup-Werkzeug. Sichere selbst, was du nicht verlieren darfst.',
+    terms: 'Nutzungsbedingungen und Haftung',
+    check: 'Ich habe die Nutzungsbedingungen und den Haftungsausschluss gelesen und akzeptiere sie.',
+    cancel: 'Abbrechen',
+    confirm: 'Herunterladen',
+  }
+
+  function localizeModal(): void {
+    if (!navigator.language.toLowerCase().startsWith('de')) return
+    setText('dl-modal-title', de.title)
+    setText('dl-modal-body', de.body)
+    setText('dl-modal-check-label', de.check)
+    setText('dl-modal-cancel', de.cancel)
+    setText('dl-modal-confirm', de.confirm)
+    const terms = document.getElementById('dl-modal-terms') as HTMLAnchorElement | null
+    if (terms) {
+      terms.href = '/terms/de'
+      terms.textContent = de.terms
+    }
+  }
+
+  // the disclaimer has to be shown before the file is fetched, so every direct download
+  // goes through the dialog and nothing about the confirmation is stored
+  function gate(): void {
+    const modal = document.getElementById('dl-modal') as HTMLDialogElement | null
+    const accept = document.getElementById('dl-modal-accept') as HTMLInputElement | null
+    const confirm = document.getElementById('dl-modal-confirm') as HTMLButtonElement | null
+    const cancel = document.getElementById('dl-modal-cancel') as HTMLButtonElement | null
+    if (!modal || !accept || !confirm || !cancel) return
+
+    localizeModal()
+    let pending = ''
+
+    for (const link of document.querySelectorAll<HTMLAnchorElement>('a[data-gated]')) {
+      link.addEventListener('click', (e) => {
+        e.preventDefault()
+        pending = link.href
+        accept.checked = false
+        confirm.disabled = true
+        modal.showModal()
+      })
+    }
+
+    accept.addEventListener('change', () => {
+      confirm.disabled = !accept.checked
+    })
+
+    cancel.addEventListener('click', () => modal.close())
+
+    confirm.addEventListener('click', () => {
+      if (!accept.checked || !pending) return
+      modal.close()
+      window.open(pending, '_blank', 'noopener,noreferrer')
+    })
+  }
+
   run()
+  gate()
 </script>

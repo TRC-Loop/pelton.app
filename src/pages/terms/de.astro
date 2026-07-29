@@ -1,0 +1,171 @@
+---
+import Base from '../../layouts/Base.astro'
+import Nav from '../../components/Nav.astro'
+import Footer from '../../components/Footer.astro'
+import { repo } from '../../data/site.js'
+---
+
+<Base
+  title="Nutzungsbedingungen und Haftung — Pelton"
+  description="Bedingungen f&uuml;r die unentgeltliche Bereitstellung von Pelton, einschlie&szlig;lich Gew&auml;hrleistung, Haftung und Datenintegrit&auml;t."
+  noindex
+  lang="de"
+>
+  <Nav />
+  <main>
+    <section class="legal">
+      <div class="wrap legal-wrap">
+        <h1>Nutzungsbedingungen und Haftung</h1>
+        <p class="legal-note">Stand: 29. Juli 2026</p>
+        <nav class="legal-switch" aria-label="Language">
+          <a href="/terms/de" class="is-active">Deutsch</a>
+          <span>&middot;</span>
+          <a href="/terms">English</a>
+        </nav>
+        <nav class="legal-links" aria-label="Legal">
+          <a href="/imprint">Impressum</a>
+          <a href="/privacy/de">Datenschutzerkl&auml;rung</a>
+        </nav>
+
+        <h2>1. Anbieter und Geltungsbereich</h2>
+        <p>
+          Diese Bedingungen gelten f&uuml;r die unentgeltliche Bereitstellung der Software Pelton
+          durch die Stellar Foundry GmbH, Thomas-Mann-Stra&szlig;e 19, 53111 Bonn, Deutschland,
+          &uuml;ber pelton.app und die Releases im Repository des Projekts. Sie gelten f&uuml;r
+          die Software selbst, nicht f&uuml;r die Nutzung dieser Website; daf&uuml;r gilt die
+          <a href="/privacy/de">Datenschutzerkl&auml;rung</a>.
+        </p>
+
+        <h2>2. Lizenz</h2>
+        <p>
+          Pelton ist freie Software und steht unter der GNU General Public License, Version 3
+          (GPLv3). Ihre Rechte an Nutzung, Vervielf&auml;ltigung, Ver&auml;nderung und
+          Weitergabe ergeben sich ausschlie&szlig;lich aus der GPLv3. Diese Bedingungen
+          schr&auml;nken die durch die GPLv3 gew&auml;hrten Rechte nicht ein und begr&uuml;nden
+          keine zus&auml;tzlichen Nutzungspflichten.
+        </p>
+        <p>
+          Volltext der Lizenz:
+          <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank" rel="noreferrer noopener">gnu.org/licenses/gpl-3.0</a>
+        </p>
+
+        <h2>3. Zusatzbedingung nach &sect; 7 lit. a GPLv3</h2>
+        <p>
+          F&uuml;r Kopien von Pelton, die von der Stellar Foundry GmbH bereitgestellt werden,
+          treten die Ziffern 4 bis 8 dieser Bedingungen an die Stelle der Gew&auml;hrleistungs-
+          und Haftungsregelungen in &sect;&sect; 15 und 16 GPLv3. &sect; 7 lit. a GPLv3
+          erlaubt eine solche abweichende Regelung ausdr&uuml;cklich.
+        </p>
+        <p>
+          Wer Pelton weitergibt, darf diese Zusatzbedingung nach &sect; 7 Abs. 2 GPLv3
+          entfernen. Die Haftung des Weitergebenden f&uuml;r die von ihm verbreitete Kopie
+          bleibt davon unber&uuml;hrt.
+        </p>
+
+        <h2>4. Keine Gew&auml;hrleistung</h2>
+        <p>
+          Pelton wird unentgeltlich und in der jeweils vorliegenden Fassung bereitgestellt. Wir
+          sichern nicht zu, dass die Software fehlerfrei arbeitet, ununterbrochen verf&uuml;gbar
+          ist, sich f&uuml;r einen bestimmten Zweck eignet oder mit einem bestimmten
+          Betriebssystem, E-Mail-Anbieter oder Protokollstand zusammenarbeitet.
+        </p>
+        <p>
+          Da die &Uuml;berlassung unentgeltlich erfolgt, haften wir f&uuml;r Sachm&auml;ngel
+          nach &sect; 524 BGB nur bei arglistigem Verschweigen eines Mangels und f&uuml;r
+          Rechtsm&auml;ngel entsprechend &sect; 523 BGB.
+        </p>
+
+        <h2>5. Haftung</h2>
+        <p>
+          a) Unbeschr&auml;nkt haften wir bei Vorsatz und grober Fahrl&auml;ssigkeit, bei der
+          Verletzung von Leben, K&ouml;rper oder Gesundheit, bei arglistigem Verschweigen eines
+          Mangels, im Umfang einer von uns ausdr&uuml;cklich &uuml;bernommenen Garantie sowie in
+          allen F&auml;llen zwingender gesetzlicher Haftung, insbesondere nach dem
+          Produkthaftungsgesetz.
+        </p>
+        <p>
+          b) Im &Uuml;brigen ist unsere Haftung nach &sect; 521 BGB auf Vorsatz und grobe
+          Fahrl&auml;ssigkeit beschr&auml;nkt, da wir Pelton unentgeltlich &uuml;berlassen.
+        </p>
+        <p>
+          c) Soweit wir gleichwohl f&uuml;r einfache Fahrl&auml;ssigkeit bei der Verletzung einer
+          wesentlichen Pflicht haften, ist die Haftung auf den bei Bereitstellung
+          vorhersehbaren, typischerweise eintretenden Schaden begrenzt.
+        </p>
+        <p>
+          d) Eine weitergehende Haftung ist ausgeschlossen. Die vorstehenden Beschr&auml;nkungen
+          gelten auch zugunsten unserer gesetzlichen Vertreter, Mitarbeiter und
+          Erf&uuml;llungsgehilfen.
+        </p>
+
+        <h2>6. Datenintegrit&auml;t und Backups</h2>
+        <p>
+          Pelton greift auf Ihre echten Postf&auml;cher zu und speichert Nachrichten und
+          Metadaten lokal auf Ihrem Ger&auml;t. Wir sichern nicht zu, dass lokal gespeicherte
+          Daten vollst&auml;ndig, dauerhaft verf&uuml;gbar oder wiederherstellbar sind, und nicht,
+          dass eine in Pelton ausgel&ouml;ste Aktion beim Server Ihres E-Mail-Anbieters das
+          erwartete Ergebnis hat. L&ouml;schvorg&auml;nge k&ouml;nnen endg&uuml;ltig sein.
+        </p>
+        <p>
+          Pelton ist kein Backup-Werkzeug und ersetzt kein Backup. F&uuml;r eine eigene,
+          unabh&auml;ngige Sicherung Ihrer Daten sind Sie selbst verantwortlich. Die Nutzung
+          erfolgt auf eigene Gefahr.
+        </p>
+
+        <h2>7. Entwicklungsstand, Support und Updates</h2>
+        <p>
+          Pelton befindet sich in aktiver Entwicklung. Funktionen k&ouml;nnen sich &auml;ndern,
+          eingeschr&auml;nkt werden oder entfallen, und Datenformate k&ouml;nnen sich zwischen
+          Versionen &auml;ndern.
+        </p>
+        <p>
+          Sie k&ouml;nnen Fehler als Issue im Repository melden, und wir lesen diese Meldungen.
+          Ein Anspruch auf Antwort, Fehlerbehebung, Weiterentwicklung, Updates oder eine
+          bestimmte Verf&uuml;gbarkeit besteht nicht.
+        </p>
+        <p>
+          <a href={repo.client} target="_blank" rel="noreferrer noopener">Fehler melden</a>
+        </p>
+
+        <h2>8. Drittanbieter</h2>
+        <p>
+          Pelton kommuniziert direkt mit den von Ihnen eingerichteten E-Mail-Anbietern und, sofern
+          Sie das konfigurieren, mit weiteren Diensten wie MCP-Servern. Wir betreiben keine Server
+          im Datenpfad und haben keinen Zugriff auf Ihre Nachrichten oder Zugangsdaten.
+        </p>
+        <p>
+          F&uuml;r Leistung, Verf&uuml;gbarkeit, Sicherheit und Bedingungen dieser Dienste ist
+          allein der jeweilige Anbieter verantwortlich. Das gilt auch f&uuml;r Themes,
+          Erweiterungen und Konfigurationen, die Sie von Dritten beziehen.
+        </p>
+
+        <h2>9. Sicherheitsl&uuml;cken melden</h2>
+        <p>
+          Sicherheitsl&uuml;cken melden Sie bitte vertraulich an
+          <a href={`mailto:${repo.email}`}>{repo.email}</a> und nicht als &ouml;ffentliches
+          Issue. Das Vorgehen ist in der Datei SECURITY.md im Repository des Clients
+          beschrieben.
+        </p>
+
+        <h2>10. Anwendbares Recht</h2>
+        <p>
+          Es gilt das Recht der Bundesrepublik Deutschland. Sind Sie Verbraucher, bleiben die
+          zwingenden Verbraucherschutzvorschriften des Staates unber&uuml;hrt, in dem Sie Ihren
+          gew&ouml;hnlichen Aufenthalt haben.
+        </p>
+
+        <h2>11. Salvatorische Klausel und &Auml;nderungen</h2>
+        <p>
+          Sollte eine Bestimmung dieser Bedingungen unwirksam sein, bleibt die Wirksamkeit der
+          &uuml;brigen Bestimmungen unber&uuml;hrt. Wir k&ouml;nnen diese Bedingungen f&uuml;r
+          k&uuml;nftige Versionen anpassen. F&uuml;r eine bereits von Ihnen bezogene Version
+          gilt die Fassung, die zum Zeitpunkt des Downloads ver&ouml;ffentlicht war. Die aktuelle
+          Fassung ist stets unter pelton.app/terms/de abrufbar.
+        </p>
+
+        <p class="legal-source">Diese deutsche Fassung ist ma&szlig;geblich; die <a href="/terms">englische Fassung</a> ist eine &Uuml;bersetzung zur Bequemlichkeit.</p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>

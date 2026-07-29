@@ -50,6 +50,7 @@ const year = new Date().getFullYear()
         &copy; {year} Pelton. GPL-3.0. Early and under active development.
         <a href="/imprint/en" id="footer-imprint">Imprint / Impressum</a> &middot;
         <a href="/privacy" id="footer-privacy">Privacy / Datenschutz</a> &middot;
+        <a href="/terms" id="footer-terms">Terms / Haftung</a> &middot;
         <a href="/AGENTS.md">For AI agents</a>
       </span>
       <a href={repo.website} class="footer-src" target="_blank" rel="noreferrer noopener">
@@ -64,7 +65,9 @@ const year = new Date().getFullYear()
   if (navigator.language.toLowerCase().startsWith('de')) {
     const imprint = document.getElementById('footer-imprint') as HTMLAnchorElement | null
     const privacy = document.getElementById('footer-privacy') as HTMLAnchorElement | null
+    const terms = document.getElementById('footer-terms') as HTMLAnchorElement | null
     if (imprint) imprint.href = '/imprint'
     if (privacy) privacy.href = '/privacy/de'
+    if (terms) terms.href = '/terms/de'
   }
 </script>
