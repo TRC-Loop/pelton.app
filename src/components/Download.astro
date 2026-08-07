@@ -58,6 +58,24 @@ import { repo } from '../data/site.js'
         </a>
       </div>
     </div>
+
+    <!-- nightly builds. deliberately understated and pointed at the GitHub
+         release page rather than at a file: that page carries the full warning,
+         and nobody should reach a nightly installer in a single click. -->
+    <div class="dl-nightly">
+      <div class="dl-nightly-text">
+        <h3>Looking for nightly builds?</h3>
+        <p>
+          Automated builds of the development branch, published on days there are changes. They are
+          untested, expected to break, and can lose or damage email. Do not use one with your real
+          inbox.
+        </p>
+      </div>
+      <a class="btn ghost" id="dl-nightly-link" href={repo.releases} target="_blank" rel="noreferrer noopener">
+        <Icon name="alert-triangle" size={17} />
+        <span>View the latest nightly</span>
+      </a>
+    </div>
   </div>
 
   <dialog class="dl-modal" id="dl-modal" aria-labelledby="dl-modal-title">
@@ -86,6 +104,7 @@ import { repo } from '../data/site.js'
 <script>
   const API = 'https://api.github.com/repos/TRC-Loop/Pelton/releases/latest'
   const FALLBACK = 'https://github.com/TRC-Loop/Pelton/releases/latest'
+  const RELEASES_API = 'https://api.github.com/repos/TRC-Loop/Pelton/releases?per_page=20'
 
   const matchers: Record<string, RegExp> = {
     'mac-arm': /macos-applesilicon\.dmg$/i,
@@ -243,6 +262,23 @@ import { repo } from '../data/site.js'
     })
   }
 
+  // point the nightly button at the newest nightly prerelease. /releases/latest
+  // skips prereleases by design, so this reads the full list instead. On any
+  // failure the button keeps its href, the releases page, which still gets the
+  // user there.
+  async function nightly(): Promise<void> {
+    const link = document.getElementById('dl-nightly-link') as HTMLAnchorElement | null
+    if (!link) return
+    try {
+      const res = await fetch(RELEASES_API, { headers: { Accept: 'application/vnd.github+json' } })
+      if (!res.ok) return
+      const list = (await res.json()) as { tag_name: string; html_url: string; prerelease: boolean }[]
+      const newest = list.find((r) => r.prerelease && r.tag_name.startsWith('nightly-'))
+      if (newest) link.href = newest.html_url
+    } catch {}
+  }
+
   run()
   gate()
+  nightly()
 </script>
