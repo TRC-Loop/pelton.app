@@ -59,22 +59,17 @@ import { repo } from '../data/site.js'
       </div>
     </div>
 
-    <!-- nightly builds. deliberately understated and pointed at the GitHub
-         release page rather than at a file: that page carries the full warning,
-         and nobody should reach a nightly installer in a single click. -->
-    <div class="dl-nightly">
-      <div class="dl-nightly-text">
-        <h3>Looking for nightly builds?</h3>
-        <p>
-          Automated builds of the development branch, published on days there are changes. They are
-          untested, expected to break, and can lose or damage email. Do not use one with your real
-          inbox.
-        </p>
+    <!-- nightly builds. pointed at the GitHub release page rather than at a
+         file: that page carries the full warning, and nobody should reach a
+         nightly installer in a single click. -->
+    <div class="dl-alts">
+      <span class="dl-alts-label">Download nightly builds</span>
+      <div class="dl-alts-links">
+        <a id="dl-nightly-link" href={repo.releases} target="_blank" rel="noreferrer noopener">
+          <Icon name="alert-triangle" size={15} />
+          <span>Latest nightly <span class="dl-alt-hint">untested, not for your real inbox</span></span>
+        </a>
       </div>
-      <a class="btn ghost" id="dl-nightly-link" href={repo.releases} target="_blank" rel="noreferrer noopener">
-        <Icon name="alert-triangle" size={17} />
-        <span>View the latest nightly</span>
-      </a>
     </div>
   </div>
 
