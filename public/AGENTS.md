@@ -127,7 +127,7 @@ Client configuration shape:
 - Website source code: https://github.com/TRC-Loop/pelton.app
 - Documentation: https://docs.pelton.app (may not be live yet while the
   project is pre-release)
-- Discord: https://arne.sh/discord
+- Discord: https://discord.gg/UzPNGZYy6V
 - Contact email: pelton@arne.sh
 - Legal: https://pelton.app/imprint (Impressum, German) ·
   https://pelton.app/privacy (privacy policy, English) ·
