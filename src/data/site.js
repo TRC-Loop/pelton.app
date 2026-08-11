@@ -6,7 +6,7 @@ export const repo = {
   releases: 'https://github.com/TRC-Loop/Pelton/releases',
   releasesLatest: 'https://github.com/TRC-Loop/Pelton/releases/latest',
   api: 'https://api.github.com/repos/TRC-Loop/Pelton/releases/latest',
-  discord: 'https://arne.sh/discord',
+  discord: 'https://discord.gg/UzPNGZYy6V',
   docs: 'https://docs.pelton.app',
   email: 'pelton@arne.sh',
   copr: 'https://copr.fedorainfracloud.org/coprs/arnek/Pelton/',
