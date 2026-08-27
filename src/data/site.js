@@ -177,7 +177,7 @@ export const faq = [
   },
   {
     q: 'Does Pelton support PGP/GPG encryption?',
-    a: 'Yes.',
+    a: 'Coming soon. Signing and encrypting mail is planned and not available yet.',
   },
   {
     q: 'Where is my data actually stored?',

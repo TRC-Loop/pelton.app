@@ -39,7 +39,7 @@ If you (Agent) want to start developing on Pelton, checkout the https://github.c
 - In-app previewer for PDFs, images and text attachments.
 - Snooze (message returns unread later) and send-later scheduling.
 - Eight colored flags — local by default, or synced as IMAP keywords.
-- PGP/GPG encryption support.
+- PGP/GPG encryption support (coming soon, not available yet).
 - Remote images and tracking pixels blocked by default (like Thunderbird),
   with per-email override.
 - Portable configuration: accounts, preferences and layout export to one file.
