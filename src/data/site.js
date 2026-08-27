@@ -118,6 +118,66 @@ export const features = [
   },
 ]
 
+export const release = {
+  version: '2026.4',
+  url: 'https://github.com/TRC-Loop/Pelton/releases/tag/v2026.4',
+}
+
+// The three that earned a mockup. `wide` means the mockup runs full width under
+// its copy instead of sitting in a side column: the sync bar is 1200x192, so in
+// a half-width column it just floats in dead space.
+export const whatsNew = [
+  {
+    slug: 'profiles',
+    title: 'Keep work and life apart',
+    body: 'A profile carries its own settings, visible accounts, flags and sidebar layout, so pinned folders and the order you put them in switch along with it. The bottom bar always says which profile you are writing from.',
+    img: {
+      src: '/img/pelton-profile-switcher.webp',
+      width: 536,
+      height: 438,
+      alt: 'The profile switcher, with Personal selected and Work and Side project beneath it',
+    },
+  },
+  {
+    slug: 'sync',
+    title: 'Sync you can watch, and trust',
+    body: 'Progress counts messages instead of folders, so a first sync reads 8,412 of 13,560 rather than 3 of 12. The window stays usable while it runs, and an account that fails gets marked in the sidebar instead of hiding behind the ones that worked.',
+    wide: true,
+    img: {
+      src: '/img/pelton-sync-progress.webp',
+      width: 1200,
+      height: 192,
+      alt: 'A sync bar reading: Syncing INBOX for arne@example.com on imap.example.com:993, 8,412 of 13,560',
+    },
+  },
+  {
+    slug: 'command-palette',
+    title: 'Everything is one shortcut away',
+    body: 'Cmd+K fuzzy-matches folders, views, messages, settings pages and every menu action from one field, off the same registry the menu bar and your shortcuts already use.',
+    img: {
+      src: '/img/pelton-command-palette.webp',
+      width: 1336,
+      height: 644,
+      alt: 'The command palette searching for arch, grouped into actions, mail and settings',
+    },
+  },
+]
+
+// No mockups for these two, so they sit side by side as plain copy.
+export const whatsNewAlso = [
+  {
+    slug: 'phishing',
+    title: 'Mail has to prove who sent it',
+    body: 'SPF, DKIM and DMARC results are shown, with checks for display-name spoofing, an off-domain Reply-To and lookalike sender domains. Blocked remote content now says how much of it looks like a tracking pixel.',
+    note: 'VirusTotal scanning for links and attachments is in too, off until you add a key.',
+  },
+  {
+    slug: 'reading-tabs',
+    title: 'Park a message in a tab',
+    body: 'Middle-click or right-click a message to open it in a tab and work through it without losing your place in the list. The tab bar exists only while a tab does.',
+  },
+]
+
 export const mcpPrompts = [
   'Summarise everything unread from my team this week.',
   'Which invoices arrived this month, and what do they add up to?',
@@ -177,7 +237,7 @@ export const faq = [
   },
   {
     q: 'Does Pelton support PGP/GPG encryption?',
-    a: 'Coming soon. Signing and encrypting mail is planned and not available yet.',
+    a: 'Yes. PGP is available as of 2026.4. You can import and store keys with passphrase handling, sign and encrypt from the compose window, and decrypt and verify mail you receive, so the signature status shows on the message itself. S/MIME landed in the same release, including opt-in revocation checking for signing certificates. Both are off until you enable them in Settings, and neither sends anything anywhere: key handling is entirely local.',
   },
   {
     q: 'Where is my data actually stored?',

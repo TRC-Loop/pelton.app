@@ -2455,3 +2455,166 @@ section {
     animation-duration: 0.9s;
   }
 }
+
+/* ---------- 404 ---------- */
+
+.nf {
+  padding: 120px 0 140px;
+}
+.nf-wrap {
+  max-width: 620px;
+  text-align: center;
+}
+.nf-potato {
+  width: 66px;
+  height: auto;
+  margin: 0 auto 28px;
+}
+.nf h1 {
+  margin: 0 0 14px;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+.nf-lead {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+.nf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-4);
+  margin: 32px 0 36px;
+}
+.nf-links {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-tertiary);
+}
+
+/* ---------- New in 2026.4 ---------- */
+
+/* the banner is its own artwork, so it gets a plate rather than trying to blend
+   into the page surface. The feature mockups below carry their own shadow in
+   the alpha channel, so they deliberately get no border. */
+.nw-banner {
+  display: block;
+  margin-bottom: 56px;
+  border: var(--hairline) solid var(--border-default);
+  border-radius: 10px;
+  overflow: hidden;
+  line-height: 0;
+}
+.nw-banner:hover {
+  text-decoration: none;
+  border-color: var(--border-strong);
+}
+.nw-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.nw-head {
+  margin-bottom: 44px;
+}
+
+.nw-list {
+  display: flex;
+  flex-direction: column;
+  gap: 44px;
+  margin-bottom: 40px;
+}
+
+.nw-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 20px 48px;
+}
+
+/* the sync bar is 1200x192; in a half-width column it floats in dead space, so
+   it runs the full width under its own copy instead */
+.nw-row.is-wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+.nw-row.is-wide .nw-copy {
+  max-width: 640px;
+}
+
+.nw-copy h3 {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: var(--fw-semibold);
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+.nw-copy p {
+  margin: 0;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.nw-copy p + .nw-note {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+
+/* the mockups differ a lot in aspect ratio, so constrain both axes and let each
+   keep its own proportions. The height cap is what stops the tall one from
+   towering over its own copy; it has to stay big enough to read the UI in. */
+.nw-visual img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 220px;
+}
+.nw-row.is-wide .nw-visual img {
+  width: 100%;
+  max-height: none;
+}
+
+.nw-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 48px;
+}
+
+.nw-rest {
+  max-width: 720px;
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-tertiary);
+}
+.nw-changelog {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+@media (max-width: 880px) {
+  .nw-banner {
+    margin-bottom: 40px;
+  }
+  .nw-head {
+    margin-bottom: 36px;
+  }
+  .nw-list {
+    gap: 44px;
+  }
+  .nw-row,
+  .nw-pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .nw-visual img {
+    max-height: 210px;
+  }
+}

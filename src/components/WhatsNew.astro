@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro'
+import AnchorHeading from './AnchorHeading.astro'
+import { whatsNew, whatsNewAlso, release } from '../data/site.js'
+---
+
+<section id="whats-new">
+  <div class="wrap">
+    <a class="nw-banner" href={release.url} target="_blank" rel="noreferrer noopener">
+      <img
+        src="/img/whats-new-2026-4.webp"
+        alt={`What's new in Pelton ${release.version}`}
+        width="2560"
+        height="1440"
+        loading="lazy"
+        decoding="async"
+      />
+    </a>
+
+    <div class="section-head nw-head">
+      <AnchorHeading id="whats-new">New in {release.version}</AnchorHeading>
+      <p>Profiles, a sync that reports real numbers, a command palette, and mail that has to prove who sent it.</p>
+    </div>
+
+    <div class="nw-list">
+      {whatsNew.map((f) => (
+        <article class:list={['nw-row', { 'is-wide': f.wide }]}>
+          <div class="nw-copy">
+            <h3 id={f.slug}>{f.title}</h3>
+            <p>{f.body}</p>
+          </div>
+          <div class="nw-visual">
+            <img
+              src={f.img.src}
+              alt={f.img.alt}
+              width={f.img.width}
+              height={f.img.height}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        </article>
+      ))}
+
+      <div class="nw-pair">
+        {whatsNewAlso.map((f) => (
+          <article class="nw-copy">
+            <h3 id={f.slug}>{f.title}</h3>
+            <p>{f.body}</p>
+            {f.note && <p class="nw-note">{f.note}</p>}
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <p class="nw-rest">
+      Also in this release: CardDAV, IMAP folder management, actions across a whole selection,
+      charset detection for mail that used to arrive as gibberish, opt-in crash logs, PGP and
+      S/MIME signing, a search that stops missing obvious matches, and 14 bug fixes.
+      <a href={release.url} class="nw-changelog" target="_blank" rel="noreferrer noopener">
+        <span>Full changelog</span>
+        <Icon name="arrow-right" size={14} stroke={2} />
+      </a>
+    </p>
+  </div>
+</section>

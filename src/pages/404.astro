@@ -1,0 +1,44 @@
+---
+import Base from '../layouts/Base.astro'
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+import Icon from '../components/Icon.astro'
+import { repo } from '../data/site.js'
+---
+
+<Base
+  title="Page not found — Pelton"
+  description="That page does not exist on pelton.app."
+  noindex
+>
+  <Nav />
+  <main>
+    <section class="nf">
+      <div class="wrap nf-wrap">
+        <img src="/img/pelton-logo.webp" alt="" class="nf-potato" width="66" height="78" />
+        <h1>This page does not exist</h1>
+        <p class="nf-lead">
+          The link is either wrong or points at something that has since moved. Nothing is
+          broken on your end.
+        </p>
+        <div class="nf-actions">
+          <a class="btn accent" href="/">
+            <Icon name="arrow-right" size={17} />
+            <span>Back to the homepage</span>
+          </a>
+          <a class="btn" href="/#download">
+            <Icon name="download" size={17} />
+            <span>Download Pelton</span>
+          </a>
+        </div>
+        <p class="nf-links">
+          Or try the <a href="/#features">features</a>, the <a href="/#faq">FAQ</a>,
+          the <a href={repo.docs} target="_blank" rel="noreferrer noopener">docs</a>,
+          or <a href={repo.discord} target="_blank" rel="noreferrer noopener">Discord</a>
+          if you were looking for something specific.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
