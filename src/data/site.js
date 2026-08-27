@@ -118,43 +118,6 @@ export const features = [
   },
 ]
 
-export const release = {
-  version: '2026.3',
-  url: 'https://github.com/TRC-Loop/Pelton/releases/tag/v2026.3',
-}
-
-export const whatsNew = [
-  {
-    slug: 'views',
-    kicker: 'Views',
-    title: 'Preset searches that keep themselves current',
-    body: 'A View is a name, an icon and a filter: free text, from/to/subject, a relative date window, and scope like unread-only, flagged or has-attachment. Every View re-runs on startup and after each sync, so the count beside it is live and opening one is instant.',
-    note: 'Off by default. Enable them under Settings → Sidebar, as a group in the sidebar or their own tab.',
-    visual: 'views',
-  },
-  {
-    slug: 'menu-bar',
-    kicker: 'Menu bar',
-    title: 'Rearrange the menu bar on the menu bar',
-    body: 'Press Edit menu bar and the live bar turns into its own editor. Drag menus and items into the order you want, hide what you never reach for, and add your own entries, submenus and separators. Built-ins are only ever hidden, never destroyed, so Reset always brings them back.',
-    visual: 'menubar',
-  },
-  {
-    slug: 'vip-senders',
-    kicker: 'VIP senders',
-    title: 'The people who get through',
-    body: 'Star a sender and their mail raises a native notification, whether that is Notification Center, a Windows toast or Linux dbus, even when general new-mail alerts are off. Matching is on the address, so a sender renaming themselves never breaks it.',
-    visual: 'vip',
-  },
-  {
-    slug: 'mailto',
-    kicker: 'mailto:',
-    title: 'Click a mail link anywhere, land in Pelton',
-    body: 'Pelton can register as your system’s mailto: handler, offered once during onboarding and after that as one quiet line in About. Links open a compose with the recipient, subject and body already filled in, and a second click hands the draft to the window you already have open instead of starting a second Pelton.',
-    visual: 'mailto',
-  },
-]
-
 export const mcpPrompts = [
   'Summarise everything unread from my team this week.',
   'Which invoices arrived this month, and what do they add up to?',
