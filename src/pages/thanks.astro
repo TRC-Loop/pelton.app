@@ -266,15 +266,18 @@ import { repo } from '../data/site.js'
   const API = 'https://api.github.com/repos/TRC-Loop/Pelton/releases'
   const SUMS = 'SHA256SUMS.txt'
 
-  // the download url arrives as a query parameter, so it is attacker-supplied
-  // text until proven otherwise. Only GitHub's own release hosts are accepted:
-  // anything else (a javascript: url, someone else's server) is dropped and the
-  // page falls back to the releases page.
-  const ALLOWED_HOSTS = [
-    'github.com',
-    'objects.githubusercontent.com',
-    'release-assets.githubusercontent.com',
-  ]
+  // The download url arrives as a query parameter, so it is attacker-supplied
+  // text until proven otherwise, and this page both links it and starts
+  // fetching it. Anything it accepts is something a stranger can make
+  // pelton.app hand a user, under a heading thanking them for it.
+  //
+  // So the test is not "is this GitHub", which would allow any release in any
+  // repository anyone can create. It is this one repository's release downloads
+  // and nothing else. Comparing the parsed href against the prefix rather than
+  // the raw string means URL normalisation has already resolved any ".."
+  // segments, and a userinfo trick like https://github.com@example.test/ fails
+  // because the credentials stay in href.
+  const DOWNLOAD_PREFIX = 'https://github.com/TRC-Loop/Pelton/releases/download/'
 
   function safeURL(raw: string | null): string | null {
     if (!raw) return null
@@ -285,8 +288,9 @@ import { repo } from '../data/site.js'
       return null
     }
     if (url.protocol !== 'https:') return null
-    if (!ALLOWED_HOSTS.includes(url.hostname)) return null
-    return url.toString()
+    if (url.hostname !== 'github.com') return null
+    if (!url.href.startsWith(DOWNLOAD_PREFIX)) return null
+    return url.href
   }
 
   function setText(id: string, text: string): void {
