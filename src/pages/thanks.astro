@@ -176,13 +176,20 @@ import { repo } from '../data/site.js'
   /* square, icon only: the digest beside it is the content, and a labelled
      button competed with it for attention */
   .thanks-copy {
+    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease,
+      border-color 0.15s ease,
+      transform 0.1s ease;
+    /* stretched rather than a fixed square, so its top and bottom edges line up
+       with the digest box beside it whatever height that wraps to */
     width: var(--control-height);
-    height: var(--control-height);
     flex: 0 0 auto;
-    align-self: flex-start;
+    align-self: stretch;
     padding: 0;
     background: var(--surface-raised);
     border: var(--hairline) solid var(--border-default);
@@ -203,8 +210,24 @@ import { repo } from '../data/site.js'
     color: var(--text-primary);
   }
 
-  .thanks-copy .thanks-copy-done {
-    display: none;
+  .thanks-copy:active {
+    transform: scale(0.94);
+  }
+
+  /* the two glyphs are stacked so they can cross-fade in place: swapping
+     display would make the button jump and lose the press feedback */
+  .thanks-copy-idle,
+  .thanks-copy-done {
+    position: absolute;
+    display: inline-flex;
+    transition:
+      opacity 0.18s ease,
+      transform 0.18s ease;
+  }
+
+  .thanks-copy-done {
+    opacity: 0;
+    transform: scale(0.5) rotate(-25deg);
   }
 
   .thanks-copy.is-done {
@@ -213,11 +236,28 @@ import { repo } from '../data/site.js'
   }
 
   .thanks-copy.is-done .thanks-copy-idle {
-    display: none;
+    opacity: 0;
+    transform: scale(0.5) rotate(25deg);
   }
 
   .thanks-copy.is-done .thanks-copy-done {
-    display: inline-flex;
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .thanks-copy,
+    .thanks-copy-idle,
+    .thanks-copy-done {
+      transition-duration: 0.01ms;
+    }
+    .thanks-copy:active {
+      transform: none;
+    }
+    .thanks-copy-done,
+    .thanks-copy.is-done .thanks-copy-idle {
+      transform: none;
+    }
   }
 
   .thanks-verify {
@@ -307,47 +347,77 @@ import { repo } from '../data/site.js'
     return `sha256sum ${file}`
   }
 
-  async function findSums(tag: string): Promise<string | null> {
+  // The checksums are read out of the release notes rather than out of
+  // SHA256SUMS.txt. The asset itself cannot be fetched from a page: GitHub
+  // redirects release downloads to a host that sends no CORS headers, so the
+  // request hangs on the redirect and then fails. api.github.com does send
+  // them, and it carries the release body, which lists the same digests.
+  async function releaseInfo(tag: string): Promise<{ body: string; sums: string | null } | null> {
     const endpoint = tag ? `${API}/tags/${encodeURIComponent(tag)}` : `${API}/latest`
+    // nothing here is worth a spinner that never ends
+    const abort = new AbortController()
+    const timer = window.setTimeout(() => abort.abort(), 8000)
     try {
-      const res = await fetch(endpoint, { headers: { Accept: 'application/vnd.github+json' } })
+      const res = await fetch(endpoint, {
+        headers: { Accept: 'application/vnd.github+json' },
+        signal: abort.signal,
+      })
       if (!res.ok) return null
       const data = await res.json()
       const asset = (data.assets || []).find((a: { name: string }) => a.name === SUMS)
-      return asset ? asset.browser_download_url : null
+      return { body: data.body || '', sums: asset ? asset.browser_download_url : null }
     } catch {
       return null
+    } finally {
+      window.clearTimeout(timer)
     }
   }
 
-  // SHA256SUMS.txt is the usual "<digest>  <filename>" per line, so the digest
-  // for one file is a lookup rather than anything clever.
+  // Any line naming the file and carrying a 64-character hex token gives up the
+  // digest. Written this way so the markdown table the release workflow emits
+  // and a plain "<digest>  <filename>" listing both parse, and so a change to
+  // how the notes are laid out does not silently break this.
+  //
+  // The name has to be delimited, not merely present: asset names are prefixes
+  // of one another (Pelton-<v>-linux-amd64 sits inside
+  // Pelton-<v>-linux-amd64.deb), and a substring match would hand back a
+  // neighbouring row's digest. Showing the wrong checksum is worse than showing
+  // none, so a partial match must not count.
+  function named(line: string, file: string): boolean {
+    let from = 0
+    for (;;) {
+      const at = line.indexOf(file, from)
+      if (at === -1) return false
+      const before = line[at - 1] ?? ' '
+      const after = line[at + file.length] ?? ' '
+      const part = /[A-Za-z0-9._-]/
+      if (!part.test(before) && !part.test(after)) return true
+      from = at + 1
+    }
+  }
+
   function digestFor(text: string, file: string): string | null {
     for (const line of text.split('\n')) {
-      const m = line.trim().match(/^([0-9a-f]{64})\s+\*?(.+)$/i)
-      if (m && m[2].trim() === file) return m[1].toLowerCase()
+      if (!named(line, file)) continue
+      const m = line.match(/\b([0-9a-f]{64})\b/i)
+      if (m) return m[1].toLowerCase()
     }
     return null
   }
 
   async function showHash(tag: string, file: string): Promise<void> {
-    const sumsURL = await findSums(tag)
+    const info = await releaseInfo(tag)
     const allLink = document.getElementById('tx-sums') as HTMLAnchorElement | null
-    if (sumsURL && allLink) allLink.href = sumsURL
+    if (info?.sums && allLink) allLink.href = info.sums
 
-    if (!sumsURL || !file) {
-      setText('tx-hash', 'No checksum file was published for this release.')
+    if (!info || !file) {
+      setText('tx-hash', 'No checksum was published for this release.')
       return
     }
 
-    let digest: string | null = null
-    try {
-      const res = await fetch(sumsURL)
-      if (res.ok) digest = digestFor(await res.text(), file)
-    } catch {}
-
+    const digest = digestFor(info.body, file)
     if (!digest) {
-      setText('tx-hash', 'The checksum for this file could not be read.')
+      setText('tx-hash', 'No checksum was published for this file.')
       return
     }
 
