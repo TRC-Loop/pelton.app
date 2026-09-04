@@ -8,7 +8,7 @@ export const repo = {
   api: 'https://api.github.com/repos/TRC-Loop/Pelton/releases/latest',
   discord: 'https://discord.gg/UzPNGZYy6V',
   docs: 'https://docs.pelton.app',
-  email: 'pelton@arne.sh',
+  email: 'contact@pelton.app',
   copr: 'https://copr.fedorainfracloud.org/coprs/arnek/Pelton/',
   coprEnable: 'arnek/Pelton',
 }
