@@ -1,0 +1,404 @@
+---
+import Base from '../layouts/Base.astro'
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+import Icon from '../components/Icon.astro'
+import { repo } from '../data/site.js'
+---
+
+<Base
+  title="Thank you"
+  description="Your Pelton download is starting, with the SHA-256 checksum to verify it against."
+  noindex
+>
+  <Nav />
+  <main>
+    <section class="thanks">
+      <div class="wrap thanks-wrap">
+        <h1 class="thanks-title">Thank you!</h1>
+
+        <div class="thanks-file">
+          <div class="thanks-file-head">
+            <Icon name="package" size={17} />
+            <span class="thanks-file-name" id="tx-name">Preparing your file</span>
+          </div>
+          <p class="thanks-file-note" id="tx-note">
+            If nothing happened, start the download yourself with the link below.
+          </p>
+          <p class="thanks-file-links">
+            <a id="tx-link" href={repo.releasesLatest}>Direct download link</a>
+            <span>&middot;</span>
+            <a id="tx-notes" href={repo.releasesLatest} target="_blank" rel="noreferrer noopener">Release notes</a>
+          </p>
+        </div>
+
+        <div class="thanks-hash" id="tx-hash-card">
+          <div class="thanks-hash-head">
+            <Icon name="shield-lock" size={16} />
+            <h2>SHA256 Hash</h2>
+          </div>
+
+          <div class="thanks-hash-row">
+            <code class="thanks-hash-value" id="tx-hash">Looking up the checksum</code>
+            <button type="button" class="thanks-copy" id="tx-copy" hidden aria-label="Copy the checksum" title="Copy the checksum">
+              <span class="thanks-copy-idle"><Icon name="copy" size={16} /></span>
+              <span class="thanks-copy-done"><Icon name="check" size={16} stroke={2.2} /></span>
+            </button>
+          </div>
+
+          <div class="thanks-verify" id="tx-verify" hidden>
+            <span class="thanks-verify-label">Check it yourself</span>
+            <pre class="thanks-verify-cmd"><code id="tx-cmd"></code></pre>
+          </div>
+
+          <p class="thanks-hash-all">
+            <a id="tx-sums" href={repo.releases} target="_blank" rel="noreferrer noopener">
+              All checksums for this release
+            </a>
+          </p>
+        </div>
+
+        <p class="thanks-back">
+          <a class="btn ghost" href="/">Back to pelton.app</a>
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .thanks {
+    padding: 72px 0 96px;
+  }
+
+  .thanks-wrap {
+    max-width: 680px;
+  }
+
+  .thanks-title {
+    margin: 0 0 var(--space-5);
+    font-size: clamp(40px, 9vw, 68px);
+    font-weight: var(--fw-bold);
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+    text-wrap: balance;
+  }
+
+  /* the file card is the one thing on this page a user might have come back
+     for, so it sits raised and above the checksum block */
+  .thanks-file {
+    margin: 0 0 var(--space-6);
+    padding: var(--space-6);
+    background: var(--surface-raised);
+    border: var(--hairline) solid var(--border-default);
+    border-radius: var(--radius-card);
+  }
+
+  .thanks-file-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-primary);
+  }
+
+  .thanks-file-name {
+    font-size: var(--fz-body);
+    font-weight: var(--fw-semibold);
+    word-break: break-all;
+  }
+
+  .thanks-file-note {
+    margin: var(--space-4) 0 var(--space-5);
+    font-size: var(--fz-list);
+    line-height: 1.5;
+    color: var(--text-tertiary);
+  }
+
+  .thanks-file-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin: 0;
+    font-size: var(--fz-body);
+  }
+
+  .thanks-file-links span {
+    color: var(--text-tertiary);
+  }
+
+  .thanks-hash {
+    padding: var(--space-6);
+    background: var(--surface-sunken);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-card);
+  }
+
+  .thanks-hash-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--text-primary);
+  }
+
+  .thanks-hash-head h2 {
+    margin: 0;
+    font-size: var(--fz-heading);
+    font-weight: var(--fw-semibold);
+  }
+
+  .thanks-hash-row {
+    margin-top: var(--space-5);
+    display: flex;
+    align-items: stretch;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  /* the digest is 64 characters and must never push the page sideways, so it
+     wraps inside its own box rather than scrolling */
+  .thanks-hash-value {
+    flex: 1 1 20ch;
+    min-width: 0;
+    padding: var(--space-4);
+    background: var(--surface-raised);
+    border: var(--hairline) solid var(--border-default);
+    border-radius: var(--radius-control);
+    font-family: var(--font-code);
+    font-size: var(--fz-label);
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    color: var(--text-primary);
+    word-break: break-all;
+  }
+
+  /* square, icon only: the digest beside it is the content, and a labelled
+     button competed with it for attention */
+  .thanks-copy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--control-height);
+    height: var(--control-height);
+    flex: 0 0 auto;
+    align-self: flex-start;
+    padding: 0;
+    background: var(--surface-raised);
+    border: var(--hairline) solid var(--border-default);
+    border-radius: var(--radius-control);
+    color: var(--text-secondary);
+    cursor: pointer;
+  }
+
+  /* the class sets display, which outranks the ua rule for the hidden
+     attribute, so hidden has to be restated or the button shows up next to a
+     message saying there is no checksum to copy */
+  .thanks-copy[hidden] {
+    display: none;
+  }
+
+  .thanks-copy:hover {
+    background: var(--surface-hover);
+    color: var(--text-primary);
+  }
+
+  .thanks-copy .thanks-copy-done {
+    display: none;
+  }
+
+  .thanks-copy.is-done {
+    color: var(--success);
+    border-color: var(--success);
+  }
+
+  .thanks-copy.is-done .thanks-copy-idle {
+    display: none;
+  }
+
+  .thanks-copy.is-done .thanks-copy-done {
+    display: inline-flex;
+  }
+
+  .thanks-verify {
+    margin-top: var(--space-5);
+  }
+
+  .thanks-verify-label {
+    display: block;
+    margin-bottom: var(--space-3);
+    font-size: var(--fz-meta);
+    font-weight: var(--fw-semibold);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-tertiary);
+  }
+
+  .thanks-verify-cmd {
+    margin: 0;
+    padding: var(--space-4);
+    overflow-x: auto;
+    background: var(--surface-raised);
+    border: var(--hairline) solid var(--border-subtle);
+    border-radius: var(--radius-control);
+    font-family: var(--font-code);
+    font-size: var(--fz-label);
+    color: var(--text-secondary);
+  }
+
+  .thanks-hash-all {
+    margin: var(--space-5) 0 0;
+    font-size: var(--fz-label);
+  }
+
+  .thanks-back {
+    margin: var(--space-6) 0 0;
+  }
+
+  @media (max-width: 560px) {
+    .thanks {
+      padding: 48px 0 64px;
+    }
+  }
+</style>
+
+<script>
+  const API = 'https://api.github.com/repos/TRC-Loop/Pelton/releases'
+  const SUMS = 'SHA256SUMS.txt'
+
+  // the download url arrives as a query parameter, so it is attacker-supplied
+  // text until proven otherwise. Only GitHub's own release hosts are accepted:
+  // anything else (a javascript: url, someone else's server) is dropped and the
+  // page falls back to the releases page.
+  const ALLOWED_HOSTS = [
+    'github.com',
+    'objects.githubusercontent.com',
+    'release-assets.githubusercontent.com',
+  ]
+
+  function safeURL(raw: string | null): string | null {
+    if (!raw) return null
+    let url: URL
+    try {
+      url = new URL(raw)
+    } catch {
+      return null
+    }
+    if (url.protocol !== 'https:') return null
+    if (!ALLOWED_HOSTS.includes(url.hostname)) return null
+    return url.toString()
+  }
+
+  function setText(id: string, text: string): void {
+    const el = document.getElementById(id)
+    if (el) el.textContent = text
+  }
+
+  // the verify command differs per platform, and the one a user wants is the one
+  // for the machine they are on.
+  function verifyCommand(file: string): string {
+    const ua = navigator.userAgent
+    if (/Win/i.test(ua)) return `Get-FileHash -Algorithm SHA256 .\\${file}`
+    if (/Mac/i.test(ua)) return `shasum -a 256 ${file}`
+    return `sha256sum ${file}`
+  }
+
+  async function findSums(tag: string): Promise<string | null> {
+    const endpoint = tag ? `${API}/tags/${encodeURIComponent(tag)}` : `${API}/latest`
+    try {
+      const res = await fetch(endpoint, { headers: { Accept: 'application/vnd.github+json' } })
+      if (!res.ok) return null
+      const data = await res.json()
+      const asset = (data.assets || []).find((a: { name: string }) => a.name === SUMS)
+      return asset ? asset.browser_download_url : null
+    } catch {
+      return null
+    }
+  }
+
+  // SHA256SUMS.txt is the usual "<digest>  <filename>" per line, so the digest
+  // for one file is a lookup rather than anything clever.
+  function digestFor(text: string, file: string): string | null {
+    for (const line of text.split('\n')) {
+      const m = line.trim().match(/^([0-9a-f]{64})\s+\*?(.+)$/i)
+      if (m && m[2].trim() === file) return m[1].toLowerCase()
+    }
+    return null
+  }
+
+  async function showHash(tag: string, file: string): Promise<void> {
+    const sumsURL = await findSums(tag)
+    const allLink = document.getElementById('tx-sums') as HTMLAnchorElement | null
+    if (sumsURL && allLink) allLink.href = sumsURL
+
+    if (!sumsURL || !file) {
+      setText('tx-hash', 'No checksum file was published for this release.')
+      return
+    }
+
+    let digest: string | null = null
+    try {
+      const res = await fetch(sumsURL)
+      if (res.ok) digest = digestFor(await res.text(), file)
+    } catch {}
+
+    if (!digest) {
+      setText('tx-hash', 'The checksum for this file could not be read.')
+      return
+    }
+
+    setText('tx-hash', digest)
+    setText('tx-cmd', verifyCommand(file))
+    const verify = document.getElementById('tx-verify')
+    if (verify) verify.hidden = false
+
+    const copy = document.getElementById('tx-copy') as HTMLButtonElement | null
+    if (!copy) return
+    copy.hidden = false
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(digest as string)
+        copy.classList.add('is-done')
+        window.setTimeout(() => copy.classList.remove('is-done'), 1600)
+      } catch {}
+    })
+  }
+
+  function run(): void {
+    const params = new URLSearchParams(window.location.search)
+    const url = safeURL(params.get('u'))
+    const tag = (params.get('v') || '').trim()
+    // the file name comes from the url itself where possible, so a mismatched
+    // n parameter cannot make the page show the digest of a different file
+    const file = url ? decodeURIComponent(url.split('/').pop() || '') : ''
+
+    if (tag) {
+      const notes = document.getElementById('tx-notes') as HTMLAnchorElement | null
+      if (notes) notes.href = `https://github.com/TRC-Loop/Pelton/releases/tag/${encodeURIComponent(tag)}`
+    }
+
+    const link = document.getElementById('tx-link') as HTMLAnchorElement | null
+
+    if (!url) {
+      // reached without a valid file, so this is just a thank you page
+      setText('tx-name', 'Pick your build on the releases page')
+      setText('tx-note', 'This page opens with a file when you download from pelton.app.')
+      void showHash(tag, '')
+      return
+    }
+
+    setText('tx-name', file)
+    if (link) link.href = url
+
+    // start the transfer without navigating away, so the page and its checksum
+    // stay on screen while the browser downloads
+    const frame = document.createElement('iframe')
+    frame.hidden = true
+    frame.src = url
+    document.body.appendChild(frame)
+
+    void showHash(tag, file)
+  }
+
+  run()
+</script>

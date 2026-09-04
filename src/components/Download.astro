@@ -20,42 +20,66 @@ import { repo } from '../data/site.js'
         <h3 id="dl-title">Get the latest release</h3>
         <p id="dl-sub">Detecting your platform and the newest build.</p>
       </div>
+      <!-- one split control: the detected platform on the left, every other
+           build behind the caret on the right, so the common case is a single
+           click and the rest is one more -->
       <div class="dl-buttons">
-        <a class="btn accent" id="dl-primary" href={repo.releasesLatest} data-gated target="_blank" rel="noreferrer noopener">
-          <span class="dl-icon" data-icon="download"><Icon name="download" size={18} /></span>
-          <span class="dl-icon" data-icon="mac" hidden><Icon name="apple" size={18} /></span>
-          <span class="dl-icon" data-icon="win" hidden><Icon name="brand-windows" size={18} /></span>
-          <span class="dl-icon" data-icon="linux" hidden><Icon name="brand-redhat" size={18} /></span>
-          <span id="dl-primary-label">Latest release</span>
-        </a>
-        <a class="btn ghost" href={repo.releases} target="_blank" rel="noreferrer noopener">
-          <Icon name="external-link" size={17} />
-          <span>All builds and releases</span>
-        </a>
-      </div>
-    </div>
+        <div class="dl-split">
+          <a class="btn accent dl-split-main" id="dl-primary" href={repo.releasesLatest} data-gated>
+            <span class="dl-icon" data-icon="download"><Icon name="download" size={18} /></span>
+            <span class="dl-icon" data-icon="mac" hidden><Icon name="apple" size={18} /></span>
+            <span class="dl-icon" data-icon="win" hidden><Icon name="brand-windows" size={18} /></span>
+            <span class="dl-icon" data-icon="linux" hidden><Icon name="brand-redhat" size={18} /></span>
+            <span id="dl-primary-label">Latest release</span>
+          </a>
+          <button
+            type="button"
+            class="btn accent dl-split-more"
+            id="dl-more"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-label="Other builds"
+          >
+            <Icon name="chevron-down" size={16} stroke={2.2} />
+          </button>
 
-    <!-- a user agent cannot tell Debian from Fedora, so on Linux we list the formats
-         instead of guessing one -->
-    <div class="dl-alts" id="dl-alts" hidden>
-      <span class="dl-alts-label">Other Linux formats</span>
-      <div class="dl-alts-links">
-        <a id="dl-alt-deb" href={repo.releasesLatest} data-gated target="_blank" rel="noreferrer noopener">
-          <Icon name="package" size={15} />
-          <span>.deb <span class="dl-alt-hint">Debian, Ubuntu</span></span>
-        </a>
-        <a id="dl-alt-rpm" href={repo.releasesLatest} data-gated target="_blank" rel="noreferrer noopener">
-          <Icon name="package" size={15} />
-          <span>.rpm <span class="dl-alt-hint">Fedora</span></span>
-        </a>
-        <a id="dl-alt-bin" href={repo.releasesLatest} data-gated target="_blank" rel="noreferrer noopener">
-          <Icon name="terminal" size={15} />
-          <span>Binary <span class="dl-alt-hint">amd64</span></span>
-        </a>
-        <a href={repo.copr} target="_blank" rel="noreferrer noopener">
-          <Icon name="brand-redhat" size={15} />
-          <span>Copr <span class="dl-alt-hint">{repo.coprEnable}</span></span>
-        </a>
+          <div class="dl-menu" id="dl-menu" hidden role="menu">
+            <span class="dl-menu-label">Other builds</span>
+            <a role="menuitem" data-build="mac-arm" href={repo.releasesLatest} data-gated>
+              <Icon name="apple" size={15} />
+              <span>macOS <span class="dl-menu-hint">Apple Silicon</span></span>
+            </a>
+            <a role="menuitem" data-build="mac-intel" href={repo.releasesLatest} data-gated>
+              <Icon name="apple" size={15} />
+              <span>macOS <span class="dl-menu-hint">Intel</span></span>
+            </a>
+            <a role="menuitem" data-build="win" href={repo.releasesLatest} data-gated>
+              <Icon name="brand-windows" size={15} />
+              <span>Windows <span class="dl-menu-hint">amd64 installer</span></span>
+            </a>
+            <a role="menuitem" data-build="deb" href={repo.releasesLatest} data-gated>
+              <Icon name="package" size={15} />
+              <span>.deb <span class="dl-menu-hint">Debian, Ubuntu</span></span>
+            </a>
+            <a role="menuitem" data-build="rpm" href={repo.releasesLatest} data-gated>
+              <Icon name="package" size={15} />
+              <span>.rpm <span class="dl-menu-hint">Fedora</span></span>
+            </a>
+            <a role="menuitem" data-build="bin" href={repo.releasesLatest} data-gated>
+              <Icon name="terminal" size={15} />
+              <span>Binary <span class="dl-menu-hint">Linux amd64</span></span>
+            </a>
+            <span class="dl-menu-sep"></span>
+            <a role="menuitem" href={repo.copr} target="_blank" rel="noreferrer noopener">
+              <Icon name="brand-redhat" size={15} />
+              <span>Copr <span class="dl-menu-hint">{repo.coprEnable}</span></span>
+            </a>
+            <a role="menuitem" href={repo.releases} target="_blank" rel="noreferrer noopener">
+              <Icon name="external-link" size={15} />
+              <span>All releases <span class="dl-menu-hint">on GitHub</span></span>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -144,6 +168,10 @@ import { repo } from '../data/site.js'
     if (el) el.textContent = text
   }
 
+  // the tag the download links were built from, so the thank-you page can look
+  // up the checksum for the right release rather than assuming the newest one
+  let releaseTag = ''
+
   async function run(): Promise<void> {
     const platform = await detectPlatform()
 
@@ -164,6 +192,7 @@ import { repo } from '../data/site.js'
       return asset ? asset.browser_download_url : null
     }
 
+    releaseTag = version
     if (version) {
       setText('dl-title', `Pelton ${version}`)
     }
@@ -183,15 +212,12 @@ import { repo } from '../data/site.js'
       }
     }
 
-    // only Linux users need the format picker
-    if (platform === 'linux') {
-      const alts = document.getElementById('dl-alts')
-      if (alts) alts.hidden = false
-      for (const [key, id] of [['deb', 'dl-alt-deb'], ['rpm', 'dl-alt-rpm'], ['bin', 'dl-alt-bin']]) {
-        const url = urlFor(key)
-        const el = document.getElementById(id) as HTMLAnchorElement | null
-        if (el && url) el.href = url
-      }
+    // every entry in the dropdown points at its own asset. One that has no
+    // matching asset in this release keeps its href, the releases page, rather
+    // than being hidden: a missing build is worth seeing.
+    for (const el of document.querySelectorAll<HTMLAnchorElement>('#dl-menu a[data-build]')) {
+      const url = urlFor(el.dataset.build || '')
+      if (url) el.href = url
     }
   }
 
@@ -253,6 +279,17 @@ import { repo } from '../data/site.js'
     confirm.addEventListener('click', () => {
       if (!accept.checked || !pending) return
       modal.close()
+
+      // a real asset goes through /thanks, which starts the transfer and shows
+      // the SHA-256 to check it against. When asset detection failed and
+      // pending is the releases page instead, send the user straight there:
+      // /thanks would try to fetch an html page as a file and get nothing.
+      if (pending.includes('/releases/download/')) {
+        const q = new URLSearchParams({ u: pending })
+        if (releaseTag) q.set('v', releaseTag)
+        window.location.href = `/thanks?${q.toString()}`
+        return
+      }
       window.open(pending, '_blank', 'noopener,noreferrer')
     })
   }
@@ -273,7 +310,41 @@ import { repo } from '../data/site.js'
     } catch {}
   }
 
+  // the dropdown beside the main download button
+  function moreMenu(): void {
+    const button = document.getElementById('dl-more') as HTMLButtonElement | null
+    const menu = document.getElementById('dl-menu') as HTMLElement | null
+    if (!button || !menu) return
+
+    const setOpen = (open: boolean): void => {
+      menu.hidden = !open
+      button.setAttribute('aria-expanded', String(open))
+    }
+
+    button.addEventListener('click', (e) => {
+      e.stopPropagation()
+      setOpen(menu.hidden)
+    })
+
+    // clicking an entry runs the download gate, which closes this itself
+    menu.addEventListener('click', () => setOpen(false))
+
+    document.addEventListener('click', (e) => {
+      if (menu.hidden) return
+      const t = e.target as Node
+      if (!menu.contains(t) && !button.contains(t)) setOpen(false)
+    })
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.hidden) {
+        setOpen(false)
+        button.focus()
+      }
+    })
+  }
+
   run()
   gate()
   nightly()
+  moreMenu()
 </script>
