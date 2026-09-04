@@ -29,6 +29,11 @@
 :root {
   --font-ui: "Familjen Grotesk", system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-ui);
+  /* real fixed-width, for text that is compared character by character rather
+     than read. --font-mono is deliberately the brand face, so it cannot serve
+     here: a checksum needs every glyph the same width and 0 distinct from O. */
+  --font-code: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas,
+    "Liberation Mono", monospace;
 
   --fw-regular: 400;
   --fw-medium: 500;
@@ -1523,6 +1528,85 @@ section {
 .dl-icon[hidden] {
   display: none;
 }
+
+/* split control: one accent button that reads as a single unit, divided by a
+   hairline rather than a gap, with the menu anchored to the whole thing */
+.dl-split {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+.dl-split-main {
+  flex: 1 1 auto;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.dl-split-more {
+  flex: 0 0 auto;
+  padding: 0 10px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  box-shadow: inset 1px 0 0 color-mix(in srgb, var(--accent-fg) 28%, transparent);
+  cursor: pointer;
+}
+.dl-split-more svg {
+  transition: transform 0.15s ease;
+}
+.dl-split-more[aria-expanded='true'] svg {
+  transform: rotate(180deg);
+}
+
+.dl-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 20;
+  min-width: 260px;
+  padding: 6px;
+  background: var(--surface-overlay);
+  border: var(--hairline) solid var(--border-default);
+  border-radius: var(--radius-card);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+  text-align: left;
+}
+.dl-menu[hidden] {
+  display: none;
+}
+.dl-menu-label {
+  display: block;
+  padding: 6px 10px 8px;
+  font-size: var(--fz-meta);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.dl-menu a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-control);
+  font-size: var(--fz-body);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+.dl-menu a:hover {
+  background: var(--surface-hover);
+}
+.dl-menu svg {
+  flex: 0 0 auto;
+  color: var(--text-tertiary);
+}
+.dl-menu-hint {
+  color: var(--text-tertiary);
+}
+.dl-menu-sep {
+  display: block;
+  height: var(--hairline);
+  margin: 6px 10px;
+  background: var(--border-subtle);
+}
 .dl-modal {
   width: min(480px, calc(100vw - 32px));
   padding: 28px;
@@ -2081,6 +2165,28 @@ section {
   font-size: 15px;
   line-height: 1.55;
   color: var(--text-secondary);
+}
+
+/* read and write are two separate grants, so the list is labelled rather than
+   left as one run of twelve tool names */
+.mcp-tool-group {
+  display: block;
+  margin: 32px 0 10px;
+  font-size: var(--fz-meta);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.mcp-tool-group:first-of-type {
+  margin-top: 0;
+}
+/* the write tools carry a rule in the accent so the ones that can act are
+   distinguishable at a glance, not only by which heading they sit under */
+.mcp-tool.is-write dt {
+  box-shadow: inset 2px 0 0 var(--accent);
+  padding-left: 10px;
+  margin-left: -12px;
 }
 
 .mcp-bottom {

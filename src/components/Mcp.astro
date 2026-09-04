@@ -1,7 +1,7 @@
 ---
 import Icon from './Icon.astro'
 import AnchorHeading from './AnchorHeading.astro'
-import { mcpPrompts, mcpTools, mcpGuarantees, repo } from '../data/site.js'
+import { mcpPrompts, mcpTools, mcpWriteTools, mcpGuarantees, repo } from '../data/site.js'
 
 const config = `{
   "mcpServers": {
@@ -20,8 +20,9 @@ const config = `{
     <div class="section-head mcp-head">
       <AnchorHeading id="mcp">Ask your agent about your inbox</AnchorHeading>
       <p>
-        Pelton speaks the Model Context Protocol, so an AI agent you already use can browse, read and
-        search your cached mail. Read-only, on your machine, off until you turn it on.
+        Pelton speaks the Model Context Protocol, so an AI agent you already use can work with your
+        cached mail. On your machine, off until you turn it on, and read-only until you grant each
+        action yourself.
       </p>
     </div>
 
@@ -65,20 +66,35 @@ const config = `{
           ))}
         </ul>
         <p class="mcp-prompts-note">
-          The last one still ends with you. An agent can compose text for you to paste, but it cannot
-          reach into Pelton and send anything.
+          The last one still ends with you. Even with sending switched on, an agent can only queue a
+          message in Pelton for you to read and approve.
         </p>
       </div>
     </div>
 
     <div class="mcp-tools">
       <div class="mcp-sub">
-        <AnchorHeading id="mcp-tools" tag="h3">Five tools, all of them read</AnchorHeading>
-        <p>The whole surface an agent gets. There is no sixth tool that writes.</p>
+        <AnchorHeading id="mcp-tools" tag="h3">Five tools that read, seven that act</AnchorHeading>
+        <p>
+          The whole surface an agent gets. The read tools work as soon as the server is on. Each
+          write tool is a switch of its own, and every one of them starts off.
+        </p>
       </div>
+
+      <span class="mcp-tool-group">Read, available once enabled</span>
       <dl class="mcp-tool-list">
         {mcpTools.map((t) => (
           <div class="mcp-tool">
+            <dt><code>{t.name}</code></dt>
+            <dd>{t.desc}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <span class="mcp-tool-group">Write, off until you grant each one</span>
+      <dl class="mcp-tool-list">
+        {mcpWriteTools.map((t) => (
+          <div class="mcp-tool is-write">
             <dt><code>{t.name}</code></dt>
             <dd>{t.desc}</dd>
           </div>
@@ -110,7 +126,7 @@ const config = `{
 
       <div class="mcp-guarantees">
         <div class="mcp-sub">
-          <AnchorHeading id="mcp-limits" tag="h3">What it cannot do</AnchorHeading>
+          <AnchorHeading id="mcp-limits" tag="h3">Where the limits are</AnchorHeading>
           <p>Handing an agent your mail is a real decision. Here is exactly what you are agreeing to.</p>
         </div>
         <div class="mcp-g-list">

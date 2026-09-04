@@ -193,6 +193,18 @@ export const mcpTools = [
   { name: 'search_messages', desc: 'Ranked full-text search, with optional from, to and subject scopes.' },
 ]
 
+// the write tools, in the order the app's settings list them. Permissions are
+// per tool, so these are seven separate switches rather than one.
+export const mcpWriteTools = [
+  { name: 'mark_read', desc: 'Mark a message read or unread.' },
+  { name: 'move_message', desc: 'Move a message to another folder of the same account.' },
+  { name: 'archive_message', desc: 'Move a message to the account’s archive.' },
+  { name: 'flag_message', desc: 'Flag or unflag a message.' },
+  { name: 'set_flag_color', desc: 'Set the color label on a message.' },
+  { name: 'delete_message', desc: 'Move a message to the trash. Nothing here deletes permanently.' },
+  { name: 'send_message', desc: 'Queue a message in Pelton for you to read and approve. It does not send.' },
+]
+
 export const mcpGuarantees = [
   {
     icon: 'lock',
@@ -206,8 +218,13 @@ export const mcpGuarantees = [
   },
   {
     icon: 'eye',
-    title: 'Read-only, structurally',
-    body: 'None of the five tools can send, move, flag or delete. The interface they are built on has no method that writes.',
+    title: 'Read-only until you decide otherwise',
+    body: 'A freshly enabled server can only browse, read and search. Every write action is granted separately, seven switches rather than one, and a tool you have not granted refuses the call with an explanation instead of pretending not to exist.',
+  },
+  {
+    icon: 'send-2',
+    title: 'Sending still ends with you',
+    body: 'Even with sending granted, send_message only queues a message in Pelton for you to read and approve. An agent cannot put mail on the wire, and delete_message moves a message to the trash rather than destroying it.',
   },
   {
     icon: 'shield-check',
@@ -229,7 +246,7 @@ export const mcpGuarantees = [
 export const faq = [
   {
     q: 'Which email providers does Pelton support?',
-    a: 'Standard IMAP and SMTP, which covers most providers out of the box. There is built-in OAuth2 support for Gmail, and because Pelton is open source, more providers can be added by the community.',
+    a: 'Standard IMAP and SMTP, which covers most providers out of the box. For Gmail, an app password is the simplest route; OAuth2 works as well, but Pelton ships no client id of its own, so it needs Google Cloud credentials you create. Because Pelton is open source, more providers can be added by the community.',
   },
   {
     q: 'Does Pelton work offline?',
@@ -261,7 +278,7 @@ export const faq = [
   },
   {
     q: 'Can an AI agent send or delete mail through Pelton?',
-    a: 'No. All five MCP tools are read-only, and the interface behind them has no method that writes. An agent can browse, read and search; it cannot send, move, flag or delete. It also never receives attachment file contents, only their names, types and sizes.',
+    a: 'Only if you grant it, and sending still ends with you. The MCP server is off until you enable it, and read-only when you do: the five read tools work straight away, while the seven write tools (mark read, move, archive, flag, set flag colour, delete and send) are switched on one at a time and all start off. A tool you have not granted refuses the call. Even with sending granted, send_message just queues a message in Pelton for you to approve, so an agent cannot put mail on the wire, and delete_message moves a message to the trash rather than destroying it. Agents never receive attachment file contents either, only names, types and sizes.',
   },
   {
     q: 'What are Views, and why do I not see them?',
