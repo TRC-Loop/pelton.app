@@ -17,11 +17,18 @@ export default defineConfig({
   // with no _redirects file.
   redirects: {
     '/2026-4': 'https://github.com/TRC-Loop/Pelton/releases/tag/v2026.4',
+    // the invite is behind our own URL so it can be rotated in one place if it
+    // ever expires or has to be revoked. Everything on the site and in the
+    // repositories points here rather than at discord.gg directly.
+    '/discord': 'https://discord.gg/UzPNGZYy6V',
   },
   integrations: [
     sitemap({
       filter: (page) =>
-        !page.includes('/imprint') && !page.includes('/privacy') && !page.includes('/2026-4'),
+        !page.includes('/imprint') &&
+        !page.includes('/privacy') &&
+        !page.includes('/2026-4') &&
+        !page.includes('/discord'),
     }),
   ],
 })
